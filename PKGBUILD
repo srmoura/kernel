@@ -105,6 +105,10 @@ prepare() {
       -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
   fi
 
+  msg "Setting BFQ as default I/O scheduler..."
+  sed -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
+    -i -e s'/CONFIG_DEFAULT_CFQ=y/# CONFIG_DEFAULT_CFQ is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
+
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
