@@ -81,6 +81,8 @@ prepare() {
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
   patch -Np1 -i "${srcdir}/${_gcc_patch}"
+
+  make mrproper
   
   zcat /proc/config.gz > ./.config
 
