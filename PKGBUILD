@@ -17,7 +17,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         # the main kernel config files
-        'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         )
@@ -25,8 +24,6 @@ sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             'SKIP'
             '1b45b58bec7ca8dcb3e0209b835c8a50cac2d2dcc550c707517d658aa9b13f00'
             'SKIP'
-            '704a479de77c9022e5c7a797d2cd7fd0e4ba1f52f9039ec8a80efd57f7e9f0d8'
-            '59830f47c1be39f874640d762dca55f972aca549a7a65ba2f1dac184251dabb2'
             '94a6f186bb1d4ed317c84e8a4a03912fceb9bcb5e70834d157d7e532fe9ad0cc'
             )
 validpgpkeys=(
@@ -45,11 +42,7 @@ prepare() {
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
   
-  if [ "${CARCH}" = "x86_64" ]; then
-    cat "${srcdir}/config.x86_64" > ./.config
-  else
-    cat "${srcdir}/config" > ./.config
-  fi
+  zcat /proc/config.gz > ./.config
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
@@ -66,7 +59,7 @@ prepare() {
   # Configure the kernel. Replace the line below with one of your choice.
   #make menuconfig # CLI menu for configuration
   #make nconfig # new CLI menu for configuration
-  #make oldconfig # using old config from previous kernel version
+  make oldconfig # using old config from previous kernel version
   #make xconfig # X-based configuration
   # ... or manually edit .config
 
