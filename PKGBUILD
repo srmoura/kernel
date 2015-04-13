@@ -19,12 +19,14 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         # the main kernel config files
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
+        'change-default-console-loglevel.patch'
         )
 sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             'SKIP'
             '1b45b58bec7ca8dcb3e0209b835c8a50cac2d2dcc550c707517d658aa9b13f00'
             'SKIP'
             '94a6f186bb1d4ed317c84e8a4a03912fceb9bcb5e70834d157d7e532fe9ad0cc'
+            '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99'
             )
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
