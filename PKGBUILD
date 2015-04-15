@@ -20,8 +20,8 @@ _gcc_patch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patc
 _bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/3.19.0-v7r7"
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
-        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
-        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
+        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
         "http://kerneldedup.org/download/uksm/${_uksmvernel}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
         "http://ck.kolivas.org/patches/3.0/3.19/3.19-ck${_ckpatchversion}/${_ckpatchname}.xz"
@@ -37,8 +37,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         )
 sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             'SKIP'
-            '1b45b58bec7ca8dcb3e0209b835c8a50cac2d2dcc550c707517d658aa9b13f00'
-            'SKIP'
+            #'1b45b58bec7ca8dcb3e0209b835c8a50cac2d2dcc550c707517d658aa9b13f00'
+            #'SKIP'
             '819961379909c028e321f37e27a8b1b08f1f1e3dd58680e07b541921282da532'
             '8f810dd873e37d6144f70b440880f4fac9fb0f58bf0486bb6e873e38a74c010f'
             '6d3043360485bbf3b8b6b780d62ff529074489e6a4d0086607de873d1278c031'
@@ -61,7 +61,7 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  patch -p1 -R -f -s -i "${srcdir}/patch-${pkgver}"
+  #patch -p1 -f -s -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
