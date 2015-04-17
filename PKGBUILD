@@ -2,8 +2,8 @@
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=linux               # Build stock -ARCH kernel
-#pkgbase=linux-custom       # Build kernel with a different name
+#pkgbase=linux               # Build stock -ARCH kernel
+pkgbase=linux-custom       # Build kernel with a different name
 _srcname=linux-4.0
 pkgver=4.0
 pkgrel=2
