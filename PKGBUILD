@@ -23,7 +23,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
         #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
-        "http://kerneldedup.org/download/uksm/${_uksmvernel}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
+        #"http://kerneldedup.org/download/uksm/${_uksmvernel}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
         "http://ck.kolivas.org/patches/3.0/3.19/3.19-ck${_ckpatchversion}/${_ckpatchname}.xz"
         "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-3.19.patch"
         "${_bfqpath}/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-3.19.patch"
@@ -40,7 +40,7 @@ sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             #'1b45b58bec7ca8dcb3e0209b835c8a50cac2d2dcc550c707517d658aa9b13f00'
             #'SKIP'
             '819961379909c028e321f37e27a8b1b08f1f1e3dd58680e07b541921282da532'
-            '8f810dd873e37d6144f70b440880f4fac9fb0f58bf0486bb6e873e38a74c010f'
+            #'8f810dd873e37d6144f70b440880f4fac9fb0f58bf0486bb6e873e38a74c010f'
             '6d3043360485bbf3b8b6b780d62ff529074489e6a4d0086607de873d1278c031'
             'fac4a507a7a16948a0069be784624f87effeb0b7992507104c7db81c190c93e2'
             '621d4877d992f353ec6d9f977377552077aeebe85c47e65716e99d699af5cb11'
@@ -72,8 +72,8 @@ prepare() {
   patch -p1 -i "${srcdir}/change-default-console-loglevel.patch"
 
   # Patch source with UKSM
-  msg "Patching with UKSM"
-  patch -Np1 -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
+  #msg "Patching with UKSM"
+  #patch -Np1 -s -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
 
   # patch source with ck patchset with BFS
   # fix double name in EXTRAVERSION
