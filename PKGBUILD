@@ -12,46 +12,42 @@ url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
 options=('!strip')
-_uksmvernel="0.1.2.3"
-_uksmname="v3.18"
+_uksmvernel="0.1.2.4-beta"
+_uksmname="linux-v4.0"
 _ckpatchversion=1
-_ckpatchname="patch-3.19-ck${_ckpatchversion}"
+_ckpatchname="patch-4.0-ck${_ckpatchversion}"
 _gcc_patch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
-_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/3.19.0-v7r7"
+_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/4.0.0-v7r7"
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
-        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
-        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
-        #"http://kerneldedup.org/download/uksm/${_uksmvernel}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
-        "http://ck.kolivas.org/patches/3.0/3.19/3.19-ck${_ckpatchversion}/${_ckpatchname}.xz"
-        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-3.19.patch"
-        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-3.19.patch"
-        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-3.19.0.patch"
+        "http://kerneldedup.org/download/uksm/beta/uksm-${_uksmvernel}-for-${_uksmname}.patch"
+        "http://ck.kolivas.org/patches/4.0/4.0/4.0-ck${_ckpatchversion}/${_ckpatchname}.bz2"
+        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-4.0.patch"
+        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-4.0.patch"
+        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-4.0.0.patch"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
-        '0001-fix-btrfs-mount-deadlock.patch'
-        '0001-fixup-drm.patch'
         )
 sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             'SKIP'
-            #'1b45b58bec7ca8dcb3e0209b835c8a50cac2d2dcc550c707517d658aa9b13f00'
-            #'SKIP'
-            '819961379909c028e321f37e27a8b1b08f1f1e3dd58680e07b541921282da532'
-            #'8f810dd873e37d6144f70b440880f4fac9fb0f58bf0486bb6e873e38a74c010f'
-            '6d3043360485bbf3b8b6b780d62ff529074489e6a4d0086607de873d1278c031'
-            'fac4a507a7a16948a0069be784624f87effeb0b7992507104c7db81c190c93e2'
-            '621d4877d992f353ec6d9f977377552077aeebe85c47e65716e99d699af5cb11'
-            '1509740239a2f5b623bc05b3b9efbfd4e2fa75029503e0770a274f7e7c59d79f'
-            '704a479de77c9022e5c7a797d2cd7fd0e4ba1f52f9039ec8a80efd57f7e9f0d8'
-            '59830f47c1be39f874640d762dca55f972aca549a7a65ba2f1dac184251dabb2'
+            '9b4b47eb6584dc39aaa5db46843b83f7c60975abecbda4dc106a8722eabe96fb'
+            'SKIP'
+            'ff47b14268b201b7d550d52c919efdbaa3c0bb3b65b249f1c4bc62ce072a04cb'
+            '440a76585338fd57f93f381bf19260347ffe82fa1520f5cf57b6343807db634d'
+            'be3ca32d048428a0cbd476bfe467e0d46d1848b95d4d7b70ab57b522d19f6cd2'
+            'ff13786f79587cfc7016f0d287b82cfd79d21d00082e7fc0c954582e26c7243e'
+            '940a0aa5b790f06e9b15ad9fc91b8cecc6e7f4bdbdbcc584fd1508d9d431c5ea'
+            'e8b5df967de0e91bfbec7a8acd39e8967ea51e090090c5d7888b408d16cce6bb'
+            '514aa8a9d03d2419c8084725fcdb2b5b4ce07966f5bd6a51224a5f7a5f8c3694'
+            'b268b03a042e3f604a12a80c6e24c42006e4d9bf4a6d9b3201eb006942718128'
             '94a6f186bb1d4ed317c84e8a4a03912fceb9bcb5e70834d157d7e532fe9ad0cc'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99'
-            '5967cf53cb9db9f070e8f346c3d7045748e4823a7fe2ee330acd18c9d02bbb77'
-            '911872ef7000af471e649aaeb3490094a0b4c1514ca1024757ca2e90ac1d2a3d'
             )
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
