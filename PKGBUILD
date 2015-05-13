@@ -106,6 +106,9 @@ prepare() {
     sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
   fi
 
+  # set extraversion to pkgrel
+  sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
+
   if [ "${CARCH}" = "x86_64" ]; then
     msg "Disabling NUMA from kernel config..."
     sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
