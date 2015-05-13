@@ -114,19 +114,19 @@ prepare() {
   sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
     -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    msg "Disabling NUMA from kernel config..."
-    sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
-      -i -e '/CONFIG_AMD_NUMA=y/d' \
-      -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
-      -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
-      -i -e '/# CONFIG_NUMA_EMU is not set/d' \
-      -i -e '/CONFIG_NODES_SHIFT=6/d' \
-      -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
-      -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
-      -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
-      -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
-  fi
+  #if [ "${CARCH}" = "x86_64" ]; then
+  #  msg "Disabling NUMA from kernel config..."
+  #  sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
+  #    -i -e '/CONFIG_AMD_NUMA=y/d' \
+  #    -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
+  #    -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
+  #    -i -e '/# CONFIG_NUMA_EMU is not set/d' \
+  #    -i -e '/CONFIG_NODES_SHIFT=6/d' \
+  #    -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
+  #    -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
+  #    -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
+  #    -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
+  #fi
 
   msg "Setting BFQ as default I/O scheduler..."
   sed -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
