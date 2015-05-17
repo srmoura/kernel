@@ -58,7 +58,7 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  patch -p1 -s -i "${srcdir}/patch-${pkgver}"
+  patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -66,27 +66,27 @@ prepare() {
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
-  patch -p1 -s -i "${srcdir}/change-default-console-loglevel.patch"
+  patch -p1 -i "${srcdir}/change-default-console-loglevel.patch"
 
   # Patch source with UKSM
   msg "Patching with UKSM"
-  patch -p1 -s -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
+  patch -p1 -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
 
   # patch source with ck patchset with BFS
   # fix double name in EXTRAVERSION
   sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatchname}"
   msg "Patching source with ck1 including BFS v0.461"
-  patch -p1 -s -i "${srcdir}/${_ckpatchname}"
+  patch -p1 -i "${srcdir}/${_ckpatchname}"
 
   # Patch source with BFQ scheduler"
   msg "Patching source with BFQ patches"
   for p in $(ls ${srcdir}/000{1,2,3}-block*.patch); do
-    patch -p1 -s -i "$p"
+    patch -p1 -i "$p"
   done
 
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
-  patch -p1 -s -i "${srcdir}/${_gcc_patch}"
+  patch -p1 -i "${srcdir}/${_gcc_patch}"
 
   make mrproper
 
