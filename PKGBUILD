@@ -95,6 +95,7 @@ prepare() {
   else
     cat "${srcdir}/config" > ./.config
   fi
+  echo 'CONFIG_HZ_250_NODEFAULT=n' >> ./.config
 
   msg "Enabling native optimizations..."
   sed -i -e 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set\nCONFIG_MNATIVE=y/' ./.config
@@ -130,12 +131,12 @@ prepare() {
   sed -i -e 's/\(CONFIG_KSM=y\)/\1\nCONFIG_UKSM=y\n# CONFIG_KSM_LEGACY is not set/' ./.config
 
   msg "Enabling BFS CPU scheduler..."
-  sed -i -e 's/\(CONFIG_INIT_ENV_ARG_LIMIT=.*\)/CONFIG_SCHED_BFS=y\n\1/' ./.config
+  echo CONFIG_SCHED_BFS=y >> ./.config
 
   msg "Enabling BFQ and setting as default I/O scheduler..."
   sed -i -e 's/\(CONFIG_CFQ_GROUP_IOSCHED=.*\)/\1\nCONFIG_IOSCHED_BFQ=y\nCONFIG_CGROUP_BFQIO=y/' \
     -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
-    -i -e s'/CONFIG_DEFAULT_CFQ=y/# CONFIG_DEFAULT_CFQ is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
+    -i -e 's/CONFIG_DEFAULT_CFQ=y/# CONFIG_DEFAULT_CFQ is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
 
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
