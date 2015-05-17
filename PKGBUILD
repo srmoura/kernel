@@ -1,6 +1,4 @@
-# $Id: PKGBUILD 234130 2015-03-19 07:35:20Z tpowa $
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
-# Maintainer: Thomas Baechler <thomas@archlinux.org>
+# Maintainer: Ranieri Althoff <ranisalt+kernel@gmail.com>
 
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-custom       # Build kernel with a different name
