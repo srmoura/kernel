@@ -128,6 +128,7 @@ prepare() {
     -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
     -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
     -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
+    -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
     -i -e 's/CONFIG_WIMAX=.*/# CONFIG_WIMAX is not set/' ./.config
