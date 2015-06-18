@@ -30,6 +30,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
         "http://kerneldedup.org/download/uksm/beta/uksm-${_uksmvernel}-for-${_uksmname}.patch"
         "http://ck.kolivas.org/patches/4.0/4.0/4.0-ck${_ckpatchversion}/${_ckpatchname}.bz2"
+        "http://ck.kolivas.org/patches/bfs/4.0/4.0/pending/bfs462-rtmn-fix.patch"
+        "http://ck.kolivas.org/patches/bfs/4.0/4.0/pending/bfs462-update_inittask.patch"
         "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-4.0.patch"
         "${_bfqpath}/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-4.0.patch"
         "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-4.0.0.patch"
@@ -46,6 +48,8 @@ sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             '819961379909c028e321f37e27a8b1b08f1f1e3dd58680e07b541921282da532'
             '440a76585338fd57f93f381bf19260347ffe82fa1520f5cf57b6343807db634d'
             'be3ca32d048428a0cbd476bfe467e0d46d1848b95d4d7b70ab57b522d19f6cd2'
+            'c28632c55b3603d538ec0669ee09fc47d1a04b40d0096c5511549946dd3aff16'
+            'a23de756d3680fb1c1cbabe3ae8c1cfb149a833177d054b9b23cc18d4d8e364a'
             'ff13786f79587cfc7016f0d287b82cfd79d21d00082e7fc0c954582e26c7243e'
             '940a0aa5b790f06e9b15ad9fc91b8cecc6e7f4bdbdbcc584fd1508d9d431c5ea'
             'e8b5df967de0e91bfbec7a8acd39e8967ea51e090090c5d7888b408d16cce6bb'
@@ -82,8 +86,10 @@ prepare() {
   # patch source with ck patchset with BFS
   # fix double name in EXTRAVERSION
   sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatchname}"
-  msg "Patching source with ck1 including BFS v0.461"
+  msg "Patching source with ck1 including BFS v0.462"
   patch -p1 -i "${srcdir}/${_ckpatchname}"
+  patch -p1 -i "${srcdir}/bfs462-rtmn-fix.patch"
+  patch -p1 -i "${srcdir}/bfs462-update_inittask.patch"
 
   # Patch source with BFQ scheduler"
   msg "Patching source with BFQ patches"
