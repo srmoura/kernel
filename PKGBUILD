@@ -16,6 +16,13 @@ _ckpatchversion=1
 _ckpatchname="patch-4.0-ck${_ckpatchversion}"
 _gcc_patch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
 _bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/4.0.0-v7r7"
+
+# Unwanted DRM drivers, split with vertical bar |
+udrm='AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|VIA|VMWGFX'
+
+# Unwanted FB drivers, split with vertical bar |
+ufb='HYPERV|OPENCORES|VIA|VOODOO1'
+
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
@@ -96,6 +103,28 @@ prepare() {
     cat "${srcdir}/config" > ./.config
   fi
   echo 'CONFIG_HZ_250_NODEFAULT=n' >> ./.config
+
+  sed -r -i -e 's/CONFIG_ACCESSIBILITY=.*/# CONFIG_ACCESSIBILITY is not set/' \
+    -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
+    -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
+    -i -e "s/CONFIG_DRM_(${udrw})=.*/# CONFIG_DRM_\1 is not set/g" \
+    -i -e "s/CONFIG_FB_(${ufb})=.*/# CONFIG_FB_\1 is not set/g" \
+    -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
+    -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
+    -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
+    -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
+    -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
+    -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
+    -i -e 's/CONFIG_IRDA=.*/# CONFIG_IRDA is not set/' \
+    -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
+    -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
+    -i -e 's/CONFIG_MEMSTICK=.*/# CONFIG_MEMSTICK is not set/' \
+    -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
+    -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
+    -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
+    -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
+    -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
+    -i -e 's/CONFIG_WIMAX=.*/# CONFIG_WIMAX is not set/' ./.config
 
   msg "Enabling native optimizations..."
   sed -i -e 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set\nCONFIG_MNATIVE=y/' ./.config
