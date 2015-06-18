@@ -167,6 +167,7 @@ prepare() {
 
   msg "Enabling BFS CPU scheduler..."
   echo CONFIG_SCHED_BFS=y >> ./.config
+  echo CONFIG_SMT_NICE=y >> ./.config
 
   msg "Enabling BFQ and setting as default I/O scheduler..."
   sed -i -e 's/\(CONFIG_CFQ_GROUP_IOSCHED=.*\)/\1\nCONFIG_IOSCHED_BFQ=y\nCONFIG_CGROUP_BFQIO=y/' \
