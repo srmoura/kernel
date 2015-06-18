@@ -39,8 +39,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch'
-        )
+        'change-default-console-loglevel.patch')
 sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             'SKIP'
             '60b691210a9e412710e29eac6468d64b6c4d1efc53a6e22878dd51044001adf0'
@@ -56,8 +55,7 @@ sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
             'e8d639582697f22333a96aa1614bcf5d9bcf2e6683a3d5296f9cfc64843606f1'
             '5dadd75693e512b77f87f5620e470405b943373613eaf4df561037e9296453be'
             'c3f70dbd79420ab82d85d79c8a98f8e14d33a6155abcf52c4f4515518cdcace1'
-            '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99'
-            )
+            '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
               '647F28654894E3BD457199BE38DBBDC86092693E' # Greg Kroah-Hartman
@@ -185,8 +183,8 @@ prepare() {
   # Configure the kernel. Replace the line below with one of your choice.
   #make menuconfig # CLI menu for configuration
   #make nconfig # new CLI menu for configuration
-  make oldconfig # using old config from previous kernel version
   #make xconfig # X-based configuration
+  make oldconfig # using old config from previous kernel version
   # ... or manually edit .config
 
   # rewrite configuration
