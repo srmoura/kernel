@@ -2,20 +2,20 @@
 
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-custom       # Build kernel with a different name
-_srcname=linux-4.0
-pkgver=4.0.9
+_srcname=linux-4.1
+pkgver=4.1.5
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
 options=('!strip')
-_uksmvernel="0.1.2.4-beta"
-_uksmname="linux-v4.0"
-_ckpatchversion=1
-_ckpatchname="patch-4.0-ck${_ckpatchversion}"
+#_uksmvernel="0.1.2.4-beta"
+#_uksmname="linux-v4.0"
+_ckpatchversion=2
+_ckpatchname="patch-4.1-ck${_ckpatchversion}"
 _gcc_patch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
-_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/4.0.0-v7r7"
+_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/4.1.0-v7r8"
 
 # Unwanted DRM drivers, split with vertical bar |
 udrm='AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|VIA|VMWGFX'
@@ -28,37 +28,29 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
-        "http://kerneldedup.org/download/uksm/beta/uksm-${_uksmvernel}-for-${_uksmname}.patch"
-        "http://ck.kolivas.org/patches/4.0/4.0/4.0-ck${_ckpatchversion}/${_ckpatchname}.bz2"
-        "http://ck.kolivas.org/patches/bfs/4.0/4.0/pending/bfs462-rtmn-fix.patch"
-        "http://ck.kolivas.org/patches/bfs/4.0/4.0/pending/bfs462-update_inittask.patch"
-        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-4.0.patch"
-        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-4.0.patch"
-        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-4.0.0.patch"
+        #"http://kerneldedup.org/download/uksm/beta/uksm-${_uksmvernel}-for-${_uksmname}.patch"
+        "http://ck.kolivas.org/patches/4.0/4.1/4.1-ck${_ckpatchversion}/${_ckpatchname}.bz2"
+        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r8-4.1.patch"
+        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r8-I-O-sched-for-4.1.patch"
+        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r8-for-4.1.0.patch"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        '0001-block-loop-convert-to-per-device-workqueue.patch'
-        '0002-block-loop-avoiding-too-many-pending-per-work-I-O.patch'
         'change-default-console-loglevel.patch')
-sha256sums=('0f2f7d44979bc8f71c4fc5d3308c03499c26a824dd311fdf6eef4dee0d7d5991'
+sha256sums=('caf51f085aac1e1cea4d00dbbf3093ead07b551fc07b31b2a989c05f8ea72d9f'
             'SKIP'
-            '842cb3abf053e809b23e615020f3d0730220660f0e71f259dce69510364965f1'
+            'b495cf8a7b978986dd2b757b687751c62f635d15cc2228edb80934bc0d449dcc'
             'SKIP'
             '819961379909c028e321f37e27a8b1b08f1f1e3dd58680e07b541921282da532'
-            '440a76585338fd57f93f381bf19260347ffe82fa1520f5cf57b6343807db634d'
-            'be3ca32d048428a0cbd476bfe467e0d46d1848b95d4d7b70ab57b522d19f6cd2'
-            'c28632c55b3603d538ec0669ee09fc47d1a04b40d0096c5511549946dd3aff16'
-            'a23de756d3680fb1c1cbabe3ae8c1cfb149a833177d054b9b23cc18d4d8e364a'
-            'ff13786f79587cfc7016f0d287b82cfd79d21d00082e7fc0c954582e26c7243e'
-            '940a0aa5b790f06e9b15ad9fc91b8cecc6e7f4bdbdbcc584fd1508d9d431c5ea'
-            'e8b5df967de0e91bfbec7a8acd39e8967ea51e090090c5d7888b408d16cce6bb'
-            'e8d639582697f22333a96aa1614bcf5d9bcf2e6683a3d5296f9cfc64843606f1'
-            '5dadd75693e512b77f87f5620e470405b943373613eaf4df561037e9296453be'
+            #'440a76585338fd57f93f381bf19260347ffe82fa1520f5cf57b6343807db634d'
+            '87726411f583862e456156fe82ef51b188e5d92e7a4bd944e01a091cd7c46428'
+            'ec0ca3c8051ea6d9a27a450998af8162464c224299deefc29044172940e96975'
+            'c5c2c48638c2a8180948bd118ffcc33c8b7ff5f9f1e4b04c8e2cafeca2bde87b'
+            '4f30f76adbdf49aec8d41ac27ad212734500c272f3cba594f134a7bc263820d9'
+            'b5d6829dcb75d99fea401d9579e859a6ebb9bc09b2d6992dde171e8f05d5cbcf'
+            'ee55d469a4c00b6fb4144549f2a9c5b84d9fe7948c7cbd2637dce72227392b4f'
             'c3f70dbd79420ab82d85d79c8a98f8e14d33a6155abcf52c4f4515518cdcace1'
-            '0682df710e8d23f0d420b3b01fbfe409b3911940b1a379b78d9f4a5ac8590386'
-            'af42b1456caee0b0db8f3cc770c78083b40159260b99db4930e503ac7824eacc'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
@@ -76,27 +68,20 @@ prepare() {
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
 
-  # Fix deadlock with stacked loop devices (FS#45129)
-  # http://marc.info/?l=linux-kernel&m=143280649731902&w=2
-  patch -Np1 -i ../0001-block-loop-convert-to-per-device-workqueue.patch
-  patch -Np1 -i ../0002-block-loop-avoiding-too-many-pending-per-work-I-O.patch
-
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
 
   # Patch source with UKSM
-  msg "Patching with UKSM"
-  patch -Np1 -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
+  #msg "Patching with UKSM"
+  #patch -Np1 -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
 
   # patch source with ck patchset with BFS
   # fix double name in EXTRAVERSION
   sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatchname}"
   msg "Patching source with ck1 including BFS v0.462"
   patch -Np1 -i "${srcdir}/${_ckpatchname}"
-  patch -Np1 -i "${srcdir}/bfs462-rtmn-fix.patch"
-  patch -Np1 -i "${srcdir}/bfs462-update_inittask.patch"
 
   # Patch source with BFQ scheduler"
   msg "Patching source with BFQ patches"
@@ -170,8 +155,8 @@ prepare() {
   #    -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
   #fi
 
-  msg "Enabling Ultra-KSM for page merging..."
-  sed -i -e 's/\(CONFIG_KSM=y\)/\1\nCONFIG_UKSM=y\n# CONFIG_KSM_LEGACY is not set/' ./.config
+  #msg "Enabling Ultra-KSM for page merging..."
+  #sed -i -e 's/\(CONFIG_KSM=y\)/\1\nCONFIG_UKSM=y\n# CONFIG_KSM_LEGACY is not set/' ./.config
 
   msg "Enabling BFS CPU scheduler..."
   echo CONFIG_SCHED_BFS=y >> ./.config
