@@ -137,9 +137,9 @@ prepare() {
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
 
   # compress kernel with fazter LZ4 algorithm
-  #msg "Changing kernel compression to LZ4"
-  #sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
-  #  -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
+  msg "Changing kernel compression to LZ4"
+  sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
+    -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
 
   #if [ "${CARCH}" = "x86_64" ]; then
   #  msg "Disabling NUMA from kernel config..."
