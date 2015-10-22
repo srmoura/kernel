@@ -407,4 +407,4 @@ for _p in ${pkgname[@]}; do
   }"
 done
 
-# vim:set ts=8 sts=2 sw=2 et:
+# vim:set ts=2 sts=2 sw=2 et:
