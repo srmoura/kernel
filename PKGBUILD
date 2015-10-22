@@ -178,6 +178,10 @@ prepare() {
   # get kernel version
   make prepare
 
+  # load probed modules
+  sudo /usr/bin/modprobed-db recall
+  make localmodconfig
+
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
   #make menuconfig # CLI menu for configuration
