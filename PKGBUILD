@@ -101,16 +101,21 @@ prepare() {
 
   sed -r -i -e 's/CONFIG_ACCESSIBILITY=.*/# CONFIG_ACCESSIBILITY is not set/' \
     -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
+    -i -e 's/CONFIG_BUG=.*/CONFIG_BUG=n/' \
     -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
+    -i -e 's/CONFIG_DEBUG_FS=.*/CONFIG_DEBUG_FS=n/' \
+    -i -e 's/CONFIG_DEBUG_KERNEL=.*/CONFIG_DEBUG_KERNEL=n/' \
     -i -e "s/CONFIG_DRM_(${udrw})=.*/# CONFIG_DRM_\1 is not set/g" \
     -i -e "s/CONFIG_FB_(${ufb})=.*/# CONFIG_FB_\1 is not set/g" \
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
     -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
+    -i -e 's/CONFIG_IKCONFIG=.*/CONFIG_IKCONFIG=n/' \
     -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
     -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
     -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
     -i -e 's/CONFIG_IRDA=.*/# CONFIG_IRDA is not set/' \
+    -i -e 's/CONFIG_KALLSYMS=.*/CONFIG_KALLSYMS=n/' \
     -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
     -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
     -i -e 's/CONFIG_MEMSTICK=.*/# CONFIG_MEMSTICK is not set/' \
