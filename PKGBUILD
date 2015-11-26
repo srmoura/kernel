@@ -1,7 +1,7 @@
 # Maintainer: Ranieri Althoff <ranisalt+kernel@gmail.com>
 
 #pkgbase=linux               # Build stock -ARCH kernel
-pkgbase=linux-custom       # Build kernel with a different name
+pkgbase=linux-uma       # Build kernel with a different name
 _srcname=linux-4.3
 pkgver=4.3
 pkgrel=1
@@ -47,7 +47,7 @@ sha256sums=('4a622cc84b8a3c38d39bc17195b0c064d2b46945dfde0dae18f77b120bc9f3ae'
             '77430c7154670dd288b6d5bd45896222bf955f02029ee5d0cfe97cc5d9bc1a9d'
             '596958c9c4b632fdf5e0cdc677859dccac4304ad07a217c9bcb0e4fa58dbea16'
             '333c14024cc8948f0f205f4eceac30060494d1ef0a785127500f5f568d36d38a'
-            'c3f70dbd79420ab82d85d79c8a98f8e14d33a6155abcf52c4f4515518cdcace1'
+            'a1cf3d8b605fd7a63b5a6588b0ad5297a8abe5adff9e524c342500d0cf7a21f5'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
@@ -143,19 +143,19 @@ prepare() {
   sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
     -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
 
-  #if [ "${CARCH}" = "x86_64" ]; then
-  #  msg "Disabling NUMA from kernel config..."
-  #  sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
-  #    -i -e '/CONFIG_AMD_NUMA=y/d' \
-  #    -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
-  #    -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
-  #    -i -e '/# CONFIG_NUMA_EMU is not set/d' \
-  #    -i -e '/CONFIG_NODES_SHIFT=6/d' \
-  #    -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
-  #    -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
-  #    -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
-  #    -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
-  #fi
+  if [ "${CARCH}" = "x86_64" ]; then
+    msg "Disabling NUMA from kernel config..."
+    sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
+      -i -e '/CONFIG_AMD_NUMA=y/d' \
+      -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
+      -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
+      -i -e '/# CONFIG_NUMA_EMU is not set/d' \
+      -i -e '/CONFIG_NODES_SHIFT=6/d' \
+      -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
+      -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
+      -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
+      -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
+  fi
 
   #msg "Enabling Ultra-KSM for page merging..."
   #sed -i -e 's/\(CONFIG_KSM=y\)/\1\nCONFIG_UKSM=y\n# CONFIG_KSM_LEGACY is not set/' ./.config
