@@ -3,8 +3,8 @@
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-custom       # Build kernel with a different name
 _srcname=linux-4.3
-pkgver=4.3
-pkgrel=1
+pkgver=4.3.3
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -25,8 +25,10 @@ ufb='HYPERV|OPENCORES|VIA|VOODOO1'
 
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
-        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
-        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
+        "0001-disabling-primary-plane-in-the-noatomic-case.patch"
+
         "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
         #"http://kerneldedup.org/download/uksm/beta/uksm-${_uksmvernel}-for-${_uksmname}.patch"
         "http://ck.kolivas.org/patches/4.0/4.3/4.3-ck${_ckpatchversion}/${_ckpatchname}.xz"
@@ -40,6 +42,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         'change-default-console-loglevel.patch')
 sha256sums=('4a622cc84b8a3c38d39bc17195b0c064d2b46945dfde0dae18f77b120bc9f3ae'
             'SKIP'
+            '95cd81fcbb87953f672150d60950548edc04a88474c42de713b91811557fefa5'
+            'SKIP'
+            'abdd04bd6beecb7c961130a68d71e6332bd260462eeaa2f4f8e634de813dcc4d'
             'cf0f984ebfbb8ca8ffee1a12fd791437064b9ebe0712d6f813fd5681d4840791'
             '01961bedc08ae3def15050e107092cba39361f6d5402049a36ff9aa0fbf328a3'
             'ebeb62206999b2749ac43bb287a6a2a5db4f6b1b688a90cefa1ceb5db94aa490'
@@ -60,7 +65,7 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  # patch -Np1 -i "${srcdir}/patch-${pkgver}"
+  patch -Np1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -69,6 +74,10 @@ prepare() {
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
+
+  # fix #46968
+  # hangs on older intel hardware
+  patch -Np1 -i "${srcdir}/0001-disabling-primary-plane-in-the-noatomic-case.patch"
 
   # Patch source with UKSM
   #msg "Patching with UKSM"
