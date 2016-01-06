@@ -119,18 +119,21 @@ prepare() {
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
     -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
-    -i -e 's/CONFIG_IKCONFIG=.*/CONFIG_IKCONFIG=n/' \
+    -i -e 's/CONFIG_IKCONFIG(_PROC)?=.*/CONFIG_IKCONFIG\1=y/' \
     -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
     -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
     -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
     -i -e 's/CONFIG_IRDA=.*/# CONFIG_IRDA is not set/' \
     -i -e 's/CONFIG_KALLSYMS=.*/CONFIG_KALLSYMS=n/' \
+    -i -e 's/CONFIG_KPROBES=.*/# CONFIG_KPROBES is not set/' \
     -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
     -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
     -i -e 's/CONFIG_MEMSTICK=.*/# CONFIG_MEMSTICK is not set/' \
     -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
     -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
     -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
+    -i -e 's/CONFIG_PROFILING=.*/# CONFIG_PROFILING is not set/' \
+    -i -e 's/CONFIG_SFI=.*/CONFIG_SFI=n/' \
     -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
