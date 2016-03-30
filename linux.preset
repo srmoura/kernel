@@ -6,5 +6,5 @@ ALL_kver="/boot/vmlinuz-linux-custom"
 PRESETS=('default')
 
 #default_config="/etc/mkinitcpio.conf"
-default_image="/boot/initramfs.img"
+default_image="/boot/initramfs-custom.img"
 #default_options=""

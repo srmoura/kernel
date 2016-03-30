@@ -1,21 +1,29 @@
+#!/usr/bin/env bash
 # Maintainer: Ranieri Althoff <ranisalt+kernel@gmail.com>
 
-#pkgbase=linux               # Build stock -ARCH kernel
-pkgbase=linux-custom       # Build kernel with a different name
-_srcname=linux-4.3
-pkgver=4.3.3
-pkgrel=2
+#pkgbase=linux              # Build stock -ARCH kernel
+pkgbase=linux-custom        # Build kernel with a different name
+_srcname=linux-4.5
+pkgver=4.5
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
 options=('!strip')
-#_uksmvernel="0.1.2.4-beta"
-#_uksmname="linux-v4.0"
-_ckpatchversion=1
-_ckpatchname="patch-4.3-ck${_ckpatchversion}"
-_gcc_patch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
-_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/4.3.0-v7r8"
+
+_kver=${_srcname#linux-}
+
+# ck patchset
+_ckver=1
+_ckpatch="patch-${_kver}-ck${_ckver}"
+
+# graysky's gcc patch
+_gccpatch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
+
+# paolo's bfq i/o scheduler
+_bfqver="v7r11"
+_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 
 # Unwanted DRM drivers, split with vertical bar |
 udrm='AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|VIA|VMWGFX'
@@ -25,47 +33,47 @@ ufb='HYPERV|OPENCORES|VIA|VOODOO1'
 
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
-        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
-        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
-        "0001-disabling-primary-plane-in-the-noatomic-case.patch"
-
-        "http://repo-ck.com/source/gcc_patch/${_gcc_patch}.gz"
-        #"http://kerneldedup.org/download/uksm/beta/uksm-${_uksmvernel}-for-${_uksmname}.patch"
-        "http://ck.kolivas.org/patches/4.0/4.3/4.3-ck${_ckpatchversion}/${_ckpatchname}.xz"
-        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r8-4.3.patch"
-        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r8-I-O-sched-for-4.3.patch"
-        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r8-for-4.3.0.patch"
+        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
+        # graysky's gcc patch file
+        "http://repo-ck.com/source/gcc_patch/${_gccpatch}.gz"
+        # ck patchset file
+        "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
+        # paolo's bfq i/o scheduler files
+        #"${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-${_bfqver}-${_kver}.patch"
+        #"${_bfqpath}/0002-block-introduce-the-BFQ-${_bfqver}-I-O-sched-for-${_kver}.patch"
+        #"${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-${_bfqver}-for-${_kver}.0.patch"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch')
-sha256sums=('4a622cc84b8a3c38d39bc17195b0c064d2b46945dfde0dae18f77b120bc9f3ae'
+sha256sums=('a40defb401e01b37d6b8c8ad5c1bbab665be6ac6310cdeed59950c96b31a519c'
             'SKIP'
-            '95cd81fcbb87953f672150d60950548edc04a88474c42de713b91811557fefa5'
-            'SKIP'
-            'abdd04bd6beecb7c961130a68d71e6332bd260462eeaa2f4f8e634de813dcc4d'
+            #'95cd81fcbb87953f672150d60950548edc04a88474c42de713b91811557fefa5'
+            #'SKIP'
             'cf0f984ebfbb8ca8ffee1a12fd791437064b9ebe0712d6f813fd5681d4840791'
-            '01961bedc08ae3def15050e107092cba39361f6d5402049a36ff9aa0fbf328a3'
-            'ebeb62206999b2749ac43bb287a6a2a5db4f6b1b688a90cefa1ceb5db94aa490'
-            '91b7cb42b8337b768e5329da205a6b61211628ec99b1e308e0e9d5283b2c86eb'
-            '77430c7154670dd288b6d5bd45896222bf955f02029ee5d0cfe97cc5d9bc1a9d'
-            '596958c9c4b632fdf5e0cdc677859dccac4304ad07a217c9bcb0e4fa58dbea16'
-            '333c14024cc8948f0f205f4eceac30060494d1ef0a785127500f5f568d36d38a'
-            'c3f70dbd79420ab82d85d79c8a98f8e14d33a6155abcf52c4f4515518cdcace1'
+            '582faf80f7ee1e6d9844c598893101d0cf941afa92fc2981e909f1382a36710a'
+            #'ebeb62206999b2749ac43bb287a6a2a5db4f6b1b688a90cefa1ceb5db94aa490'
+            #'91b7cb42b8337b768e5329da205a6b61211628ec99b1e308e0e9d5283b2c86eb'
+            #'77430c7154670dd288b6d5bd45896222bf955f02029ee5d0cfe97cc5d9bc1a9d'
+            '4e520b53399541b5d166fba4be397756278cbcbc260be87bd3ff324496ac3619'
+            '30660541b981bfbf60db8ffdbf75dca63648ca19bc2fba564b4561f6ecc7bf1b'
+            'dfcd3b919ef8bb3eff6d86b9df4b94f3db6f2386c25ad961edf52b6d1e2fb205'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
               '647F28654894E3BD457199BE38DBBDC86092693E' # Greg Kroah-Hartman
              )
 
-_kernelname=${pkgbase#linux}
+#_kernelname=${pkgbase#linux}
+kernelname="-GLaDOS"
 
 prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  patch -Np1 -i "${srcdir}/patch-${pkgver}"
+  #patch -Np1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -75,29 +83,25 @@ prepare() {
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -Np1 -i "${srcdir}/change-default-console-loglevel.patch"
 
-  # fix #46968
-  # hangs on older intel hardware
-  patch -Np1 -i "${srcdir}/0001-disabling-primary-plane-in-the-noatomic-case.patch"
-
   # Patch source with UKSM
   #msg "Patching with UKSM"
   #patch -Np1 -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
 
   # patch source with ck patchset with BFS
   # fix double name in EXTRAVERSION
-  sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatchname}"
-  msg "Patching source with ck1 including BFS v0.462"
-  patch -Np1 -i "${srcdir}/${_ckpatchname}"
+  sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatch}"
+  msg "Patching source with ck${_ckver}"
+  patch -Np1 -i "${srcdir}/${_ckpatch}"
 
   # Patch source with BFQ scheduler"
-  msg "Patching source with BFQ patches"
-  for p in $(ls ${srcdir}/000{1,2,3}-block*.patch); do
-    patch -Np1 -i "$p"
-  done
+  #msg "Patching source with BFQ patches"
+  #for p in $(ls ${srcdir}/000{1,2,3}-block*.patch); do
+  #  patch -Np1 -i "$p"
+  #done
 
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
-  patch -Np1 -i "${srcdir}/${_gcc_patch}"
+  patch -Np1 -i "${srcdir}/${_gccpatch}"
 
   make mrproper
 
@@ -143,7 +147,7 @@ prepare() {
   sed -i -e 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set\nCONFIG_MNATIVE=y/' ./.config
 
   if [ "${_kernelname}" != "" ]; then
-    sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"-GLaDOS\"|g" ./.config
+    sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
     sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
   fi
 
@@ -151,9 +155,9 @@ prepare() {
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
 
   # compress kernel with fazter LZ4 algorithm
-  msg "Changing kernel compression to LZ4"
-  sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
-    -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
+  #msg "Changing kernel compression to LZ4"
+  #sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
+  #  -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
 
   #if [ "${CARCH}" = "x86_64" ]; then
   #  msg "Disabling NUMA from kernel config..."
@@ -176,10 +180,10 @@ prepare() {
   echo CONFIG_SCHED_BFS=y >> ./.config
   echo CONFIG_SMT_NICE=y >> ./.config
 
-  msg "Enabling BFQ and setting as default I/O scheduler..."
-  sed -i -e 's/\(CONFIG_CFQ_GROUP_IOSCHED=.*\)/\1\nCONFIG_IOSCHED_BFQ=y\nCONFIG_CGROUP_BFQIO=y/' \
-    -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
-    -i -e 's/CONFIG_DEFAULT_CFQ=y/# CONFIG_DEFAULT_CFQ is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
+  #msg "Enabling BFQ and setting as default I/O scheduler..."
+  #sed -i -e 's/\(CONFIG_CFQ_GROUP_IOSCHED=.*\)/\1\nCONFIG_IOSCHED_BFQ=y\nCONFIG_CGROUP_BFQIO=y/' \
+  #  -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
+  #  -i -e 's/\(CONFIG_DEFAULT_CFQ\)=.*/# \1 is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
 
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
@@ -188,8 +192,8 @@ prepare() {
   make prepare
 
   # load probed modules
-  sudo /usr/bin/modprobed-db recall
-  make localmodconfig
+  #sudo /usr/bin/modprobed-db recall
+  #make localmodconfig
 
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
