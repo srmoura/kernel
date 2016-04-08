@@ -3,8 +3,8 @@
 
 #pkgbase=linux              # Build stock -ARCH kernel
 pkgbase=linux-custom        # Build kernel with a different name
-_srcname=linux-4.5
-pkgver=4.5
+_srcname=linux-4.4
+pkgver=4.4.6
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -33,32 +33,32 @@ ufb='HYPERV|OPENCORES|VIA|VOODOO1'
 
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
-        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
-        #"https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         # graysky's gcc patch file
         "http://repo-ck.com/source/gcc_patch/${_gccpatch}.gz"
         # ck patchset file
         "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
         # paolo's bfq i/o scheduler files
-        #"${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-${_bfqver}-${_kver}.patch"
-        #"${_bfqpath}/0002-block-introduce-the-BFQ-${_bfqver}-I-O-sched-for-${_kver}.patch"
-        #"${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-${_bfqver}-for-${_kver}.0.patch"
+        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-${_bfqver}-${_kver}.0.patch"
+        "${_bfqpath}/0002-block-introduce-the-BFQ-${_bfqver}-I-O-sched-for-${_kver}.0.patch"
+        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-${_bfqver}-for.patch"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch')
-sha256sums=('a40defb401e01b37d6b8c8ad5c1bbab665be6ac6310cdeed59950c96b31a519c'
+sha256sums=('401d7c8fef594999a460d10c72c5a94e9c2e1022f16795ec51746b0d165418b2'
             'SKIP'
-            #'95cd81fcbb87953f672150d60950548edc04a88474c42de713b91811557fefa5'
-            #'SKIP'
+            'efea93ff30955d445344a83c36678fa8e64111219eeafea2a41fd4ee11f79d68'
+            'SKIP'
             'cf0f984ebfbb8ca8ffee1a12fd791437064b9ebe0712d6f813fd5681d4840791'
-            '582faf80f7ee1e6d9844c598893101d0cf941afa92fc2981e909f1382a36710a'
-            #'ebeb62206999b2749ac43bb287a6a2a5db4f6b1b688a90cefa1ceb5db94aa490'
-            #'91b7cb42b8337b768e5329da205a6b61211628ec99b1e308e0e9d5283b2c86eb'
-            #'77430c7154670dd288b6d5bd45896222bf955f02029ee5d0cfe97cc5d9bc1a9d'
-            '4e520b53399541b5d166fba4be397756278cbcbc260be87bd3ff324496ac3619'
-            '30660541b981bfbf60db8ffdbf75dca63648ca19bc2fba564b4561f6ecc7bf1b'
+            'a800a076e7f9ab07e8baee33919f8731087f876000f8ab6a327521a7a772838f'
+            'd1cf14cc696b0f716454fe8eb9746383700889d5d22ad829611f0433cc77b4ce'
+            'b17c3fb18c5b8c20a45a38198f293679ca6aef08d16f12cd816a5cfafac4b2c4'
+            '69a21bc286a628128cfc4723558829cb6ff6c2d7c4dfd4468457898674187b25'
+            'fbbae1d873900e84d1b7ef00593fbb94fc79f078a34b22ee824bab8b0a92be64'
+            '756a168bbc3bb582f0df45b977c32af53658f21d62fe15171c9ac85f52d8852a'
             'dfcd3b919ef8bb3eff6d86b9df4b94f3db6f2386c25ad961edf52b6d1e2fb205'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
@@ -67,13 +67,13 @@ validpgpkeys=(
              )
 
 #_kernelname=${pkgbase#linux}
-kernelname="-GLaDOS"
+_kernelname="-GLaDOS"
 
 prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  #patch -Np1 -i "${srcdir}/patch-${pkgver}"
+  patch -Np1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -93,11 +93,11 @@ prepare() {
   msg "Patching source with ck${_ckver}"
   patch -Np1 -i "${srcdir}/${_ckpatch}"
 
-  # Patch source with BFQ scheduler"
-  #msg "Patching source with BFQ patches"
-  #for p in $(ls ${srcdir}/000{1,2,3}-block*.patch); do
-  #  patch -Np1 -i "$p"
-  #done
+  # Patch source with BFQ scheduler
+  msg "Patching source with BFQ patches"
+  for p in $(ls ${srcdir}/000{1,2,3}-block*.patch); do
+    patch -Np1 -i "$p"
+  done
 
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
@@ -180,10 +180,11 @@ prepare() {
   echo CONFIG_SCHED_BFS=y >> ./.config
   echo CONFIG_SMT_NICE=y >> ./.config
 
-  #msg "Enabling BFQ and setting as default I/O scheduler..."
-  #sed -i -e 's/\(CONFIG_CFQ_GROUP_IOSCHED=.*\)/\1\nCONFIG_IOSCHED_BFQ=y\nCONFIG_CGROUP_BFQIO=y/' \
-  #  -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
-  #  -i -e 's/\(CONFIG_DEFAULT_CFQ\)=.*/# \1 is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
+  msg "Enabling BFQ and setting as default I/O scheduler..."
+  sed -i -e '/CONFIG_IOSCHED_CFQ=.*/i CONFIG_IOSCHED_BFQ=y' \
+    -i -e '/CONFIG_CFQ_GROUP_IOSCHED=.*/i CONFIG_BFQ_GROUP_IOSCHED=y' \
+    -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
+    -i -e 's/\(CONFIG_DEFAULT_CFQ\)=.*/# \1 is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
 
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
