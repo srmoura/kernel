@@ -114,6 +114,7 @@ prepare() {
 
   sed -r -i -e 's/CONFIG_ACCESSIBILITY=.*/# CONFIG_ACCESSIBILITY is not set/' \
     -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
+    -i -e 's/CONFIG_ATA=.*/CONFIG_ATA=y/' \
     -i -e 's/CONFIG_BUG=.*/CONFIG_BUG=n/' \
     -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
     -i -e 's/CONFIG_DEBUG_FS=.*/CONFIG_DEBUG_FS=n/' \
@@ -137,8 +138,11 @@ prepare() {
     -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
     -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
     -i -e 's/CONFIG_PROFILING=.*/# CONFIG_PROFILING is not set/' \
+    -i -e 's/CONFIG_SATA_AHCI=.*/CONFIG_SATA_AHCI=y/' \
     -i -e 's/CONFIG_SFI=.*/CONFIG_SFI=n/' \
+    -i -e 's/CONFIG_SND_HDA(_INTEL)?=.*/CONFIG_SND_HDA\1=y/' \
     -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
+    -i -e 's/CONFIG_SOUND=.*/CONFIG_SOUND=y/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
     -i -e 's/CONFIG_WIMAX=.*/# CONFIG_WIMAX is not set/' ./.config
