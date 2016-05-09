@@ -26,10 +26,10 @@ _bfqver="v7r11"
 _bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 
 # Unwanted DRM drivers, split with vertical bar |
-udrm='AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|VIA|VMWGFX'
+udrm='AMDGPU|AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|UDL|VIA|VIRTIO_GPU|VMWGFX'
 
 # Unwanted FB drivers, split with vertical bar |
-ufb='HYPERV|OPENCORES|VIA|VOODOO1'
+ufb='HYPERV|OPENCORES|UDL|VIA|VIRTUAL|VOODOO1'
 
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
