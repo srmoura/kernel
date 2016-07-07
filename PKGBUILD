@@ -130,8 +130,6 @@ prepare() {
     -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
     -i -e 's/CONFIG_DEBUG_FS=.*/CONFIG_DEBUG_FS=n/' \
     -i -e 's/CONFIG_DEBUG_KERNEL=.*/CONFIG_DEBUG_KERNEL=n/' \
-    -i -e 's/CONFIG_DRM=.*/CONFIG_DRM=y/' \
-    -i -e 's/CONFIG_DRM_I915=.*/CONFIG_DRM_I915=y/' \
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
     -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
@@ -153,7 +151,6 @@ prepare() {
     -i -e 's/CONFIG_SFI=.*/CONFIG_SFI=n/' \
     -i -e 's/CONFIG_SND_HDA(_INTEL)?=.*/CONFIG_SND_HDA\1=y/' \
     -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
-    -i -e 's/CONFIG_SOUND=.*/CONFIG_SOUND=y/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
     -i -e 's/CONFIG_WIMAX=.*/# CONFIG_WIMAX is not set/' \
