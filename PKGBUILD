@@ -65,7 +65,7 @@ sha256sums=('a93771cd5a8ad27798f22e9240538dfea48d3a2bf2a6a6ab415de3f02d25d866'
             'e0c9474431b60ca9fc3da04e7610748219da143440f1d7f5152572c7c63b52e0'
             '02e8b02e8cd10aa059917a489a9663e7f66bdf12c5ae8a1e0369bb2862da6b68'
             'd59014b8f887c6aa9488ef5ff9bc5d4357850a979f3ff90a2999bbe24e5c6e15'
-            'dfcd3b919ef8bb3eff6d86b9df4b94f3db6f2386c25ad961edf52b6d1e2fb205'
+            'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99'
             'ae0d16e81a915fae130125ba9d0b6fd2427e06f50b8b9514abc4029efe61ee98')
 validpgpkeys=(
@@ -170,9 +170,9 @@ prepare() {
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
 
   # compress kernel with fazter LZ4 algorithm
-  #msg "Changing kernel compression to LZ4"
-  #sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
-  #  -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
+  msg "Changing kernel compression to LZ4"
+  sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
+    -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
 
   #if [ "${CARCH}" = "x86_64" ]; then
   #  msg "Disabling NUMA from kernel config..."
@@ -208,8 +208,8 @@ prepare() {
   make prepare
 
   # load probed modules
-  #sudo /usr/bin/modprobed-db recall
-  #make localmodconfig
+  sudo /usr/bin/modprobed-db recall
+  make localmodconfig
 
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
