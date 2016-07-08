@@ -160,7 +160,8 @@ prepare() {
     -i -e "s/CONFIG_(${ufs})_FS=.*/# CONFIG_\1_FS is not set/g" ./.config
 
   msg "Enabling native optimizations..."
-  sed -i -e 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set\nCONFIG_MNATIVE=y/' ./.config
+  sed -i 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set/' ./.config
+  echo 'CONFIG_MNATIVE=y' >> ./.config
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
@@ -194,10 +195,11 @@ prepare() {
   echo CONFIG_SMT_NICE=y >> ./.config
 
   msg "Enabling BFQ and setting as default I/O scheduler..."
-  sed -i -e '/CONFIG_IOSCHED_CFQ=.*/i CONFIG_IOSCHED_BFQ=y' \
-    -i -e '/CONFIG_CFQ_GROUP_IOSCHED=.*/i CONFIG_BFQ_GROUP_IOSCHED=y' \
-    -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
-    -i -e 's/\(CONFIG_DEFAULT_CFQ\)=.*/# \1 is not set\nCONFIG_DEFAULT_BFQ=y/' ./.config
+  sed -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
+    -i -e 's/CONFIG_DEFAULT_CFQ=.*/# CONFIG_DEFAULT_CFQ is not set/' ./.config
+  echo 'CONFIG_IOSCHED_BFQ=y' >> ./.config
+  echo 'CONFIG_BFQ_GROUP_IOSCHED=y' >> ./.config
+  echo 'CONFIG_DEFAULT_BFQ=y' >> ./.config
 
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
