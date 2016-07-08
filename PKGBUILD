@@ -144,12 +144,13 @@ prepare() {
     -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
     -i -e 's/CONFIG_MEMSTICK=.*/# CONFIG_MEMSTICK is not set/' \
     -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
+    -i -e 's/CONFIG_NFS_DEBUG=.*/CONFIG_NFS_DEBUG=n/' \
+    -i -e '/CONFIG_OPTIMIZE_INLINING/ c\CONFIG_OPTIMIZE_INLINING=y/' \
     -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
     -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
     -i -e 's/CONFIG_PROFILING=.*/# CONFIG_PROFILING is not set/' \
     -i -e 's/CONFIG_SATA_AHCI=.*/CONFIG_SATA_AHCI=y/' \
     -i -e 's/CONFIG_SFI=.*/CONFIG_SFI=n/' \
-    -i -e 's/CONFIG_SND_HDA(_INTEL)?=.*/CONFIG_SND_HDA\1=y/' \
     -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
