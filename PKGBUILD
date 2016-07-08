@@ -188,9 +188,6 @@ prepare() {
   #    -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
   #fi
 
-  #msg "Enabling Ultra-KSM for page merging..."
-  #sed -i -e 's/\(CONFIG_KSM=y\)/\1\nCONFIG_UKSM=y\n# CONFIG_KSM_LEGACY is not set/' ./.config
-
   msg "Enabling BFS CPU scheduler..."
   echo CONFIG_SCHED_BFS=y >> ./.config
   echo CONFIG_SMT_NICE=y >> ./.config
@@ -416,21 +413,7 @@ _package-headers() {
   rm -f "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/kbuild/Kconfig.select-break"
 }
 
-_package-docs() {
-  pkgdesc="Kernel hackers manual - HTML documentation that comes with the ${pkgbase/linux/Linux} kernel"
-
-  cd "${srcdir}/${_srcname}"
-
-  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build"
-  cp -al Documentation "${pkgdir}/usr/lib/modules/${_kernver}/build"
-  find "${pkgdir}" -type f -exec chmod 444 {} \;
-  find "${pkgdir}" -type d -exec chmod 755 {} \;
-
-  # remove a file already in linux package
-  rm -f "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/DocBook/Makefile"
-}
-
-pkgname=("${pkgbase}" "${pkgbase}-headers" "${pkgbase}-docs")
+pkgname=("${pkgbase}" "${pkgbase}-headers")
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
     $(declare -f "_package${_p#${pkgbase}}")
