@@ -139,6 +139,8 @@ prepare() {
     -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
     -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
     -i -e 's/CONFIG_MEMSTICK=.*/# CONFIG_MEMSTICK is not set/' \
+    -i -e 's/CONFIG_MODULE_FORCE_(UN)?LOAD=.*/# CONFIG_MODULE_FORCE_\1LOAD is not set/' \
+    -i -e 's/CONFIG_MODVERSIONS=.*/# CONFIG_MODVERSIONS is not set/' \
     -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
     -i -e 's/CONFIG_NFS_DEBUG=.*/CONFIG_NFS_DEBUG=n/' \
     -i -e '/CONFIG_OPTIMIZE_INLINING/ c\CONFIG_OPTIMIZE_INLINING=y/' \
