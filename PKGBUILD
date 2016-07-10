@@ -121,13 +121,12 @@ prepare() {
 
   sed -r -i -e 's/CONFIG_ACCESSIBILITY=.*/# CONFIG_ACCESSIBILITY is not set/' \
     -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
-    -i -e 's/CONFIG_BUG=*/# CONFIG_BUG is not set/' \
     -i -e 's/CONFIG_DEBUG_FS/# CONFIG_DEBUG_FS is not set/' \
-    -i -e 's/CONFIG_DEBUG_KERNEL=.*/CONFIG_DEBUG_KERNEL=n/' \
+    -i -e 's/CONFIG_DEBUG_KERNEL=.*/# CONFIG_DEBUG_KERNEL is not set/' \
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
     -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
-    -i -e 's/CONFIG_IKCONFIG(_PROC)?=.*/CONFIG_IKCONFIG\1=y/' \
+    -i -e '/CONFIG_IKCONFIG(_PROC)?=.*/ c\CONFIG_IKCONFIG\1=y/' \
     -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
     -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
     -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
@@ -139,7 +138,6 @@ prepare() {
     -i -e 's/CONFIG_MODULE_FORCE_(UN)?LOAD=.*/# CONFIG_MODULE_FORCE_\1LOAD is not set/' \
     -i -e 's/CONFIG_MODVERSIONS=.*/# CONFIG_MODVERSIONS is not set/' \
     -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
-    -i -e 's/CONFIG_NFS_DEBUG=.*/CONFIG_NFS_DEBUG=n/' \
     -i -e '/CONFIG_OPTIMIZE_INLINING/ c\CONFIG_OPTIMIZE_INLINING=y/' \
     -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
     -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
