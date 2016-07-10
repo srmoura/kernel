@@ -126,7 +126,7 @@ prepare() {
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
     -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
-    -i -e '/CONFIG_IKCONFIG(_PROC)?=.*/ c\CONFIG_IKCONFIG\1=y/' \
+    -i -e 's/CONFIG_IKCONFIG(_PROC)?=.*/CONFIG_IKCONFIG\1=y/' \
     -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
     -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
     -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
