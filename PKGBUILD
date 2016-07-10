@@ -198,6 +198,12 @@ prepare() {
   msg "Setting log buffer size to 256 KB"
   sed -i -e 's/CONFIG_LOG_BUF_SHIFT=.*/CONFIG_LOG_BUF_SHIFT=18/' ./.config
 
+  msg "Enabling processor-specific optimizations"
+  sed -i -e 's/CONFIG_NR_CPUS=.*/CONFIG_NR_CPUS=4/' \
+    -i -e 's/CONFIG_SUP_(AMD|CENTAUR)=.*/# CONFIG_SUP_\1 is not set/' \
+    -i -e 's/CONFIG_(AMD|CALGARY|GART)_IOMMU=.*/# CONFIG_\1_IOMMU is not set/' \
+    -i -e 's/CONFIG_(MICROCODE|X86_MCE)_AMD=.*/# CONFIG_\1_AMD is not set/' ./.config
+
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
