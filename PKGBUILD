@@ -121,10 +121,8 @@ prepare() {
 
   sed -r -i -e 's/CONFIG_ACCESSIBILITY=.*/# CONFIG_ACCESSIBILITY is not set/' \
     -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
-    -i -e 's/CONFIG_ATA=.*/CONFIG_ATA=y/' \
-    -i -e 's/CONFIG_BUG=.*/CONFIG_BUG=n/' \
-    -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
-    -i -e 's/CONFIG_DEBUG_FS=.*/CONFIG_DEBUG_FS=n/' \
+    -i -e 's/CONFIG_BUG=*/# CONFIG_BUG is not set/' \
+    -i -e 's/CONFIG_DEBUG_FS/# CONFIG_DEBUG_FS is not set/' \
     -i -e 's/CONFIG_DEBUG_KERNEL=.*/CONFIG_DEBUG_KERNEL=n/' \
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
@@ -134,7 +132,6 @@ prepare() {
     -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
     -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
     -i -e 's/CONFIG_IRDA=.*/# CONFIG_IRDA is not set/' \
-    -i -e 's/CONFIG_KALLSYMS=.*/CONFIG_KALLSYMS=n/' \
     -i -e 's/CONFIG_KPROBES=.*/# CONFIG_KPROBES is not set/' \
     -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
     -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
@@ -147,8 +144,8 @@ prepare() {
     -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
     -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
     -i -e 's/CONFIG_PROFILING=.*/# CONFIG_PROFILING is not set/' \
-    -i -e 's/CONFIG_SATA_AHCI=.*/CONFIG_SATA_AHCI=y/' \
-    -i -e 's/CONFIG_SFI=.*/CONFIG_SFI=n/' \
+    -i -e 's/CONFIG_RD_(BZIP2|LZMA|XZ|LZO)=.*/# CONFIG_RD_\1 is not set/g' \
+    -i -e 's/CONFIG_SFI=.*/# CONFIG_SFI is not set/' \
     -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
