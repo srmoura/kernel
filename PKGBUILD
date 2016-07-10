@@ -94,10 +94,6 @@ prepare() {
   # https://bugs.archlinux.org/task/49401
   patch -p1 -i "${srcdir}/0001-linux-4.6-rtlwifi-fix-atomic.patch"
 
-  # Patch source with UKSM
-  #msg "Patching with UKSM"
-  #patch -Np1 -i "${srcdir}/uksm-${_uksmvernel}-for-${_uksmname}.patch"
-
   # patch source with ck patchset with BFS
   # fix double name in EXTRAVERSION
   sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatch}"
