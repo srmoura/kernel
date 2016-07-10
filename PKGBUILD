@@ -209,6 +209,9 @@ prepare() {
   sudo /usr/bin/modprobed-db recall
   make localmodconfig
 
+  sed -r -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
+    -i -e 's/CONFIG_VIRTUALIZATION=*/# CONFIG_VIRTUALIZATION is not set/' ./.config
+
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
   #make menuconfig # CLI menu for configuration
