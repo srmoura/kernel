@@ -196,6 +196,9 @@ prepare() {
   echo 'CONFIG_BFQ_GROUP_IOSCHED=y' >> ./.config
   echo 'CONFIG_DEFAULT_BFQ=y' >> ./.config
 
+  msg "Setting log buffer size to 256 KB"
+  sed -i -e 's/CONFIG_LOG_BUF_SHIFT=.*/CONFIG_LOG_BUF_SHIFT=18/' ./.config
+
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
