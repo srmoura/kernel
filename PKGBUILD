@@ -130,6 +130,7 @@ prepare() {
     -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
     -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
     -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
+    -i -e 's/CONFIG_IOSCHED_CFQ=.*/# CONFIG_IOSCHED_CFQ is not set/' \
     -i -e 's/CONFIG_IRDA=.*/# CONFIG_IRDA is not set/' \
     -i -e 's/CONFIG_KPROBES=.*/# CONFIG_KPROBES is not set/' \
     -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
