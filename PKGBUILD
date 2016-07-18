@@ -148,6 +148,7 @@ prepare() {
     -i -e 's/CONFIG_SFI=.*/# CONFIG_SFI is not set/' \
     -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
     -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
+    -i -e 's/CONFIG_UNUSED_SYMBOLS=.*/# CONFIG_UNUSED_SYMBOLS is not set/' \
     -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
     -i -e 's/CONFIG_WIMAX=.*/# CONFIG_WIMAX is not set/' \
     -i -e "s/CONFIG_DRM_(${udrm})=.*/# CONFIG_DRM_\1 is not set/g" \
