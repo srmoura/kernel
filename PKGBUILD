@@ -23,9 +23,10 @@ _ckpatch="patch-${_kver}-ck${_ckver}"
 _gccpatch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
 
 # paolo's bfq i/o scheduler
-_bfqkver="4.5"
+_bfqkver="4.7"
 _bfqver="v7r11"
-_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
+#_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
+_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-v8"
 
 # Unwanted DRM drivers, split with vertical bar |
 udrm='AMDGPU|AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|UDL|VIA|VIRTIO_GPU|VMWGFX'
@@ -48,6 +49,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-${_bfqver}-${_bfqkver}.0.patch"
         "${_bfqpath}/0002-block-introduce-the-BFQ-${_bfqver}-I-O-sched-for-${_bfqkver}.0.patch"
         "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-${_bfqver}-for.patch"
+        "${_bfqpath}/0004-block-bfq-turn-BFQ-${_bfqver}-for-${_bfqkver}.0-into-BFQ-v8-for-4.patch"
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
@@ -60,10 +62,11 @@ sha256sums=('a93771cd5a8ad27798f22e9240538dfea48d3a2bf2a6a6ab415de3f02d25d866'
             'f500a3b841c41420914938d681e258c712fbbd7ebec5fe70f0abc071a1738e47'
             'SKIP'
             'cf0f984ebfbb8ca8ffee1a12fd791437064b9ebe0712d6f813fd5681d4840791'
-            '4475edebbcac102e5d92921970c12b22482c08069cc1478a7c922453611e0871'
-            '5d19ecb91320a64f0abb6c8e70205fef848ada967093faa94e4c0c39c340d0c8'
-            '9c1e11772ff29d37dacc9246f63e24d5154eb61682ba2b7e175a9ccbdc7116e1'
-            'e0c9474431b60ca9fc3da04e7610748219da143440f1d7f5152572c7c63b52e0'
+            'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
+            '1e16d406dc5b58d61198566281dbfea781fae78af0ed839ab3950255fa56aa78'
+            '391b1cb6b423c427fc46fb491f85d544e4756795833c6fb2553ddad6dc658d93'
+            '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
+            '37162e4ef2b829760d1c16c7bb49805316b333a6aba84040fa602a415de9e773'
             '02e8b02e8cd10aa059917a489a9663e7f66bdf12c5ae8a1e0369bb2862da6b68'
             'd59014b8f887c6aa9488ef5ff9bc5d4357850a979f3ff90a2999bbe24e5c6e15'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
