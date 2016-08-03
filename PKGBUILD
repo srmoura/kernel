@@ -191,12 +191,12 @@ prepare() {
   echo CONFIG_SCHED_BFS=y >> ./.config
   echo CONFIG_SMT_NICE=y >> ./.config
 
-  msg "Enabling BFQ and setting as default I/O scheduler..."
-  sed -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,bfq,' \
+  msg "Enabling BFQ and setting noop as default I/O scheduler..."
+  sed -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,noop,' \
     -i -e 's/CONFIG_DEFAULT_CFQ=.*/# CONFIG_DEFAULT_CFQ is not set/' ./.config
   echo 'CONFIG_IOSCHED_BFQ=y' >> ./.config
   echo 'CONFIG_BFQ_GROUP_IOSCHED=y' >> ./.config
-  echo 'CONFIG_DEFAULT_BFQ=y' >> ./.config
+  echo 'CONFIG_DEFAULT_NOOP=y' >> ./.config
 
   msg "Setting log buffer size to 256 KB"
   sed -i -e 's/CONFIG_LOG_BUF_SHIFT=.*/CONFIG_LOG_BUF_SHIFT=18/' ./.config
