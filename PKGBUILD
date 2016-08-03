@@ -123,7 +123,9 @@ prepare() {
     -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
     -i -e 's/CONFIG_DEBUG_FS/# CONFIG_DEBUG_FS is not set/' \
     -i -e 's/CONFIG_DEBUG_KERNEL=.*/# CONFIG_DEBUG_KERNEL is not set/' \
+    -i -e 's/CONFIG_DYNAMIC_DEBUG/# CONFIG_DYNAMIC_DEBUG is not set/' \
     -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
+    -i -e 's/CONFIG_FTRACE=.*/# CONFIG_FTRACE is not set/' \
     -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
     -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
     -i -e 's/CONFIG_IKCONFIG(_PROC)?=.*/CONFIG_IKCONFIG\1=y/' \
