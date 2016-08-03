@@ -102,7 +102,7 @@ prepare() {
 
   # Patch source with BFQ scheduler
   msg "Patching source with BFQ patches"
-  for p in $(ls ${srcdir}/000{1,2,3}-block*.patch); do
+  for p in "${srcdir}"/000{1,2,3,4}-block*.patch; do
     patch -Np1 -i "$p"
   done
 
