@@ -52,6 +52,7 @@ source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/l
         "${_bfqpath}/0002-block-introduce-the-BFQ-${_bfqver}-I-O-sched-for-${_bfqkver}.0.patch"
         "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-${_bfqver}-for.patch"
         "${_bfqpath}/0004-block-bfq-turn-BFQ-${_bfqver}-for-${_bfqkver}.0-into-BFQ-v8-for-4.patch"
+        'zen-tune.patch'
         # the main kernel config files
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
@@ -68,6 +69,7 @@ sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             '391b1cb6b423c427fc46fb491f85d544e4756795833c6fb2553ddad6dc658d93'
             '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
             '37162e4ef2b829760d1c16c7bb49805316b333a6aba84040fa602a415de9e773'
+            'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
             '02e8b02e8cd10aa059917a489a9663e7f66bdf12c5ae8a1e0369bb2862da6b68'
             'd59014b8f887c6aa9488ef5ff9bc5d4357850a979f3ff90a2999bbe24e5c6e15'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
@@ -109,6 +111,10 @@ prepare() {
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
   patch -Np1 -i "${srcdir}/${_gccpatch}"
+
+  # Patch source with Zen Tuning for improved responsiveness
+  msg "Patching source with Zen Tuning"
+  patch -Np1 -i "${srcdir}/zen-tune.patch"
 
   make mrproper
 
@@ -197,6 +203,9 @@ prepare() {
   echo 'CONFIG_IOSCHED_BFQ=y' >> ./.config
   echo 'CONFIG_BFQ_GROUP_IOSCHED=y' >> ./.config
   echo 'CONFIG_DEFAULT_NOOP=y' >> ./.config
+
+  msg "Enabling Zen tuning options..."
+  echo 'CONFIG_ZEN_INTERACTIVE=y' >> ./.config
 
   msg "Setting log buffer size to 256 KB"
   sed -i -e 's/CONFIG_LOG_BUF_SHIFT=.*/CONFIG_LOG_BUF_SHIFT=18/' ./.config
