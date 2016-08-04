@@ -21,9 +21,6 @@ _kver=${_srcname#linux-}
 _ckver=1
 _ckpatch="patch-${_kver}-ck${_ckver}"
 
-# graysky's gcc patch
-_gccpatch="enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
-
 # paolo's bfq i/o scheduler
 _bfqkver="4.7"
 _bfqver="v7r11"
@@ -44,7 +41,7 @@ source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/l
         #"https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgver}/patch-${_pkgbasever}-${_pkgver}.xz"
         #"https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgver}/patch-${_pkgbasever}-${_pkgver}.xz.sign"
         # graysky's gcc patch file
-        "http://repo-ck.com/source/gcc_patch/${_gccpatch}.gz"
+        "git+https://github.com/graysky2/kernel_gcc_patch.git"
         # ck patchset file
         "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
         # paolo's bfq i/o scheduler files
@@ -63,7 +60,7 @@ sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             'SKIP'
             #'857df33f085a0116b9d2322ffe3b23d5b7d8c4898427d79f68108a653e84910c'
             #'SKIP'
-            'cf0f984ebfbb8ca8ffee1a12fd791437064b9ebe0712d6f813fd5681d4840791'
+            'SKIP'
             'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
             '1e16d406dc5b58d61198566281dbfea781fae78af0ed839ab3950255fa56aa78'
             '391b1cb6b423c427fc46fb491f85d544e4756795833c6fb2553ddad6dc658d93'
@@ -110,7 +107,7 @@ prepare() {
 
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
-  patch -Np1 -i "${srcdir}/${_gccpatch}"
+  patch -Np1 -i "${srcdir}/kernel_gcc_patch/enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
 
   # Patch source with Zen Tuning for improved responsiveness
   msg "Patching source with Zen Tuning"
