@@ -27,14 +27,17 @@ _bfqver="v7r11"
 #_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 _bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-v8"
 
-# Unwanted DRM drivers, split with vertical bar |
-udrm='AMDGPU|AST|BOCHS|CIRRUS_QEMU|GMA500|MGA|MGAG200|NOUVEAU|QXL|RADEON|R128|SAVAGE|TDFX|UDL|VIA|VIRTIO_GPU|VMWGFX'
+# Unwanted DRM drivers
+UDRM='amdgpu ast bochs cirrus_qemu gma500 mga mgag200 nouveau qxl radeon r128 savage tdfx udl via virtio_gpu vmwgfx'
 
-# Unwanted FB drivers, split with vertical bar |
-ufb='HYPERV|OPENCORES|UDL|VIA|VIRTUAL|VOODOO1'
+# Unwanted FB drivers
+UFB='hyperv opencores udl via virtual voodoo1'
 
-# Unwanted filesystems, split with vertical bar |
-ufs='REISERFS|JFS|XFS|GFS2|OCFS2|BTRFS|NILFS2'
+# Unwanted filesystems
+UFS='reiserfs jfs xfs gfs2 ocfs2 btrfs nilfs2'
+
+# Unwanted ramdisk formats
+URD='bzip2 lzma xz lzo'
 
 source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/linux-libre-${_pkgbasever}.tar.xz"
         "https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/linux-libre-${_pkgbasever}.tar.xz.sign"
@@ -120,48 +123,70 @@ prepare() {
   else
     cat "${srcdir}/config" > ./.config
   fi
-  echo 'CONFIG_HZ_250_NODEFAULT=n' >> ./.config
 
-  sed -r -i -e 's/CONFIG_ACCESSIBILITY=.*/# CONFIG_ACCESSIBILITY is not set/' \
-    -i -e 's/CONFIG_AGP=.*/# CONFIG_AGP is not set/' \
-    -i -e 's/CONFIG_DEBUG_FS/# CONFIG_DEBUG_FS is not set/' \
-    -i -e 's/CONFIG_DEBUG_KERNEL=.*/# CONFIG_DEBUG_KERNEL is not set/' \
-    -i -e 's/CONFIG_DYNAMIC_DEBUG/# CONFIG_DYNAMIC_DEBUG is not set/' \
-    -i -e 's/CONFIG_FIREWIRE=.*/# CONFIG_FIREWIRE is not set/' \
-    -i -e 's/CONFIG_FTRACE=.*/# CONFIG_FTRACE is not set/' \
-    -i -e 's/CONFIG_HAMRADIO=.*/# CONFIG_HAMRADIO is not set/' \
-    -i -e 's/CONFIG_HYPERVISOR_GUEST=.*/# CONFIG_HYPERVISOR_GUEST is not set/' \
-    -i -e 's/CONFIG_IKCONFIG(_PROC)?=.*/CONFIG_IKCONFIG\1=y/' \
-    -i -e 's/CONFIG_INFINIBAND=.*/# CONFIG_INFINIBAND is not set/' \
-    -i -e 's/CONFIG_INPUT_TOUCHSCREEN=.*/# CONFIG_INPUT_TOUCHSCREEN is not set/' \
-    -i -e 's/CONFIG_INPUT_MISC=.*/# CONFIG_INPUT_MISC is not set/' \
-    -i -e 's/CONFIG_IOSCHED_CFQ=.*/# CONFIG_IOSCHED_CFQ is not set/' \
-    -i -e 's/CONFIG_IRDA=.*/# CONFIG_IRDA is not set/' \
-    -i -e 's/CONFIG_KPROBES=.*/# CONFIG_KPROBES is not set/' \
-    -i -e 's/CONFIG_MACINTOSH_DRIVERS=.*/# CONFIG_MACINTOSH_DRIVERS is not set/' \
-    -i -e 's/CONFIG_MD=.*/# CONFIG_MD is not set/' \
-    -i -e 's/CONFIG_MEMSTICK=.*/# CONFIG_MEMSTICK is not set/' \
-    -i -e 's/CONFIG_MODULE_FORCE_(UN)?LOAD=.*/# CONFIG_MODULE_FORCE_\1LOAD is not set/' \
-    -i -e 's/CONFIG_MODVERSIONS=.*/# CONFIG_MODVERSIONS is not set/' \
-    -i -e 's/CONFIG_NFC=.*/# CONFIG_NFC is not set/' \
-    -i -e '/CONFIG_OPTIMIZE_INLINING/ c\CONFIG_OPTIMIZE_INLINING=y/' \
-    -i -e 's/CONFIG_PARPORT=.*/# CONFIG_PARPORT is not set/' \
-    -i -e 's/CONFIG_PARTITION_ADVANCED=.*/# CONFIG_PARTITION_ADVANCED is not set/' \
-    -i -e 's/CONFIG_PROFILING=.*/# CONFIG_PROFILING is not set/' \
-    -i -e 's/CONFIG_RD_(BZIP2|LZMA|XZ|LZO)=.*/# CONFIG_RD_\1 is not set/g' \
-    -i -e 's/CONFIG_SFI=.*/# CONFIG_SFI is not set/' \
-    -i -e 's/CONFIG_SND_SOC=.*/# CONFIG_SND_SOC is not set/' \
-    -i -e 's/CONFIG_STAGING=.*/# CONFIG_STAGING is not set/' \
-    -i -e 's/CONFIG_UNUSED_SYMBOLS=.*/# CONFIG_UNUSED_SYMBOLS is not set/' \
-    -i -e 's/CONFIG_WATCHDOG=.*/# CONFIG_WATCHDOG is not set/' \
-    -i -e 's/CONFIG_WIMAX=.*/# CONFIG_WIMAX is not set/' \
-    -i -e "s/CONFIG_DRM_(${udrm})=.*/# CONFIG_DRM_\1 is not set/g" \
-    -i -e "s/CONFIG_FB_(${ufb})=.*/# CONFIG_FB_\1 is not set/g" \
-    -i -e "s/CONFIG_(${ufs})_FS=.*/# CONFIG_\1_FS is not set/g" ./.config
+  msg "Disabling unused drivers, port support and protocols"
+  scripts/config --disable agp \
+                 --disable firewire \
+                 --disable hamradio \
+                 --disable hypervisor_guest \
+                 --disable infiniband \
+                 --disable irda \
+                 --disable macintosh_drivers \
+                 --disable md \
+                 --disable memstick \
+                 --disable nfc \
+                 --disable parport \
+                 --disable partition_advanced \
+                 --disable sfi \
+                 --disable snd_soc \
+                 --disable staging \
+                 --disable wimax
 
-  msg "Enabling native optimizations..."
-  sed -i 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set/' ./.config
-  echo 'CONFIG_MNATIVE=y' >> ./.config
+
+  msg "Disabling unused debugging features"
+  scripts/config --disable debug_fs \
+                 --disable debug_kernel \
+                 --disable dynamic_debug \
+                 --disable ftrace \
+                 --disable kprobes \
+                 --disable profiling \
+                 --disable unused_symbols \
+                 --disable watchdog
+
+  msg "Disabling unsafe or unused module features"
+  scripts/config --disable module_force_load \
+                 --disable module_force_unload \
+                 --disable modversions
+
+
+  msg "Disabling accessibility support"
+  scripts/config --disable accessibility \
+
+  msg "Enabling access to config via /proc"
+  scripts/config --enable ikconfig --enable ikconfig_proc
+
+  msg "Disabling touchscreen and miscellaneous input"
+  scripts/config --disable input_touchscreen --disable input_misc
+
+  msg "Disabling unwanted DRM drivers"
+  for d in $UDRM; do
+    scripts/config --disable "drm_${d}"
+  done
+
+  msg "Disabling unwanted framebuffer drivers"
+  for f in $UFB; do
+    scripts/config --disable "fb_${f}"
+  done
+
+  msg "Disabling unwanted file systems"
+  for f in $UFS; do
+    scripts/config --disable "${f}_fs"
+  done
+
+  msg "Disabling unused ramdisk formats"
+  for r in $URD; do
+    scripts/config --disable "rd_${r}"
+  done
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
@@ -170,11 +195,6 @@ prepare() {
 
   # set extraversion to pkgrel
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
-
-  # compress kernel with fazter LZ4 algorithm
-  msg "Changing kernel compression to LZ4"
-  sed -i -e 's/CONFIG_KERNEL_GZIP=y/# CONFIG_KERNEL_GZIP is not set/' \
-    -i -e 's/# CONFIG_KERNEL_LZ4 is not set/CONFIG_KERNEL_LZ4=y/' ./.config
 
   #if [ "${CARCH}" = "x86_64" ]; then
   #  msg "Disabling NUMA from kernel config..."
@@ -191,29 +211,43 @@ prepare() {
   #fi
 
   msg "Enabling BFS CPU scheduler..."
-  echo CONFIG_SCHED_BFS=y >> ./.config
-  echo CONFIG_SMT_NICE=y >> ./.config
+  scripts/config --disable hz_250_nodefault \
+                 --enable sched_bfs \
+                 --enable smt_nice
 
   msg "Enabling BFQ and setting noop as default I/O scheduler..."
-  sed -i -e '/CONFIG_DEFAULT_IOSCHED/ s,cfq,noop,' \
-    -i -e 's/CONFIG_DEFAULT_CFQ=.*/# CONFIG_DEFAULT_CFQ is not set/' ./.config
-  echo 'CONFIG_IOSCHED_BFQ=y' >> ./.config
-  echo 'CONFIG_BFQ_GROUP_IOSCHED=y' >> ./.config
-  echo 'CONFIG_DEFAULT_NOOP=y' >> ./.config
+  scripts/config --enable bfq_group_iosched \
+                 --enable iosched_bfq \
+                 --disable iosched_cfq \
+                 --enable default_noop
 
   msg "Enabling Zen tuning options..."
-  echo 'CONFIG_ZEN_INTERACTIVE=y' >> ./.config
+  scripts/config --enable zen_interactive
 
-  msg "Setting log buffer size to 256 KB"
-  sed -i -e 's/CONFIG_LOG_BUF_SHIFT=.*/CONFIG_LOG_BUF_SHIFT=18/' ./.config
+  msg "Setting reduced log buffer sizes"
+  scripts/config --set-val log_buf_shift 18 --set-val nmi_log_buf_shift 12
 
   msg "Enabling processor-specific optimizations"
-  sed -r -i -e 's/CONFIG_NR_CPUS=.*/CONFIG_NR_CPUS=4/' \
-    -i -e 's/CONFIG_(AMD|CALGARY|GART)_IOMMU=.*/# CONFIG_\1_IOMMU is not set/' \
-    -i -e 's/CONFIG_(MICROCODE|X86_MCE)_AMD=.*/# CONFIG_\1_AMD is not set/' ./.config
+  scripts/config --set-val nr_cpus 4 \
+                 --disable amd_iommu \
+                 --disable calgary_iommu \
+                 --disable gart_iommu \
+                 --disable microcode_amd \
+                 --disable x86_mce_amd
 
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
+
+  msg "Enabling compiler optimizations"
+  scripts/config --enable  cc_optimize_for_performance \
+                 --enable  cpu_freq_default_gov_schedutil \
+                 --enable  kernel_lz4 \
+                 --enable  mnative \
+                 --enable  optimize_inlining \
+                 --enable  trim_unused_ksyms
+
+  # rewrite configuration
+  yes "" | make config >/dev/null
 
   # get kernel version
   make prepare
@@ -222,8 +256,10 @@ prepare() {
   sudo /usr/bin/modprobed-db recall
   make localmodconfig
 
-  sed -r -i -e 's/CONFIG_CHROME_PLATFORMS=.*/# CONFIG_CHROME_PLATFORMS is not set/' \
-    -i -e 's/CONFIG_VIRTUALIZATION=*/# CONFIG_VIRTUALIZATION is not set/' ./.config
+  msg "Disabling stubborn features"
+  scripts/config --disable chrome_platforms \
+                 --disable gcov \
+                 --disable virtualization
 
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
