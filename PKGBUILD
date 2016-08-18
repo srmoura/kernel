@@ -127,6 +127,8 @@ prepare() {
                  --disable hamradio \
                  --disable hypervisor_guest \
                  --disable infiniband \
+                 --disable input_touchscreen \
+                 --disable input_misc \
                  --disable irda \
                  --disable macintosh_drivers \
                  --disable md \
@@ -160,9 +162,6 @@ prepare() {
 
   msg "Enabling access to config via /proc"
   scripts/config --enable ikconfig --enable ikconfig_proc
-
-  msg "Disabling touchscreen and miscellaneous input"
-  scripts/config --disable input_touchscreen --disable input_misc
 
   msg "Disabling unwanted DRM drivers"
   for d in $UDRM; do
@@ -220,9 +219,6 @@ prepare() {
   msg "Enabling Zen tuning options..."
   scripts/config --enable zen_interactive
 
-  msg "Setting reduced log buffer sizes"
-  scripts/config --set-val log_buf_shift 18 --set-val nmi_log_buf_shift 12
-
   msg "Enabling processor-specific optimizations"
   scripts/config --set-val nr_cpus 4 \
                  --disable amd_iommu \
@@ -241,9 +237,6 @@ prepare() {
                  --enable  mnative \
                  --enable  optimize_inlining \
                  --enable  trim_unused_ksyms
-
-  # rewrite configuration
-  yes "" | make config >/dev/null
 
   # get kernel version
   make prepare
