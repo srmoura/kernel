@@ -1,13 +1,12 @@
-# $Id: PKGBUILD 272545 2016-07-28 08:27:39Z tpowa $
+# $Id: PKGBUILD 273608 2016-08-11 18:16:05Z tpowa $
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
 #pkgbase=linux              # Build stock -ARCH kernel
 pkgbase=linux-custom  # Build kernel with a different name
 _srcname=linux-4.7
-pkgver=4.7
-_pkgbasever=4.7-gnu
-_pkgver=4.7-gnu
+pkgver=4.7.1
+_pkgbasever=4.7
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -22,10 +21,8 @@ _ckver=1
 _ckpatch="patch-${_kver}-ck${_ckver}"
 
 # paolo's bfq i/o scheduler
-_bfqkver="4.7"
-_bfqver="v7r11"
-#_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
-_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-v8"
+_bfqver="v8r2"
+_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 
 # Unwanted DRM drivers
 UDRM='amdgpu ast bochs cirrus_qemu gma500 mga mgag200 nouveau qxl radeon r128 savage tdfx udl via virtio_gpu vmwgfx'
@@ -39,19 +36,19 @@ UFS='reiserfs jfs xfs gfs2 ocfs2 btrfs nilfs2'
 # Unwanted ramdisk formats
 URD='bzip2 lzma xz lzo'
 
-source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/linux-libre-${_pkgbasever}.tar.xz"
-        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/linux-libre-${_pkgbasever}.tar.xz.sign"
-        #"https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgver}/patch-${_pkgbasever}-${_pkgver}.xz"
-        #"https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgver}/patch-${_pkgbasever}-${_pkgver}.xz.sign"
+source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-gnu/linux-libre-${_pkgbasever}-gnu.tar.xz"
+        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-gnu/linux-libre-${_pkgbasever}-gnu.tar.xz.sign"
+        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/patch-${_pkgbasever}-gnu-${pkgver}-gnu.xz"
+        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/patch-${_pkgbasever}-gnu-${pkgver}-gnu.xz.sign"
         # graysky's gcc patch file
         "git+https://github.com/graysky2/kernel_gcc_patch.git"
         # ck patchset file
         "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
         # paolo's bfq i/o scheduler files
-        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-${_bfqver}-${_bfqkver}.0.patch"
-        "${_bfqpath}/0002-block-introduce-the-BFQ-${_bfqver}-I-O-sched-for-${_bfqkver}.0.patch"
-        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-${_bfqver}-for.patch"
-        "${_bfqpath}/0004-block-bfq-turn-BFQ-${_bfqver}-for-${_bfqkver}.0-into-BFQ-v8-for-4.patch"
+        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r11-${_pkgbasever}.0.patch"
+        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r11-I-O-sched-for-${_pkgbasever}.0.patch"
+        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r11-for.patch"
+        "${_bfqpath}/0004-block-bfq-turn-BFQ-v7r11-for-${_pkgbasever}.0-into-BFQ-${_bfqver}-for.patch"
         'zen-tune.patch'
         # the main kernel config files
         'config' 'config.x86_64'
@@ -61,17 +58,17 @@ source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}/l
 
 sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             'SKIP'
-            #'857df33f085a0116b9d2322ffe3b23d5b7d8c4898427d79f68108a653e84910c'
-            #'SKIP'
+            'dd831fc3104057cf43f05391c40da84543a146a7ce748bb6e21132a06712a879'
+            'SKIP'
             'SKIP'
             'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
             '1e16d406dc5b58d61198566281dbfea781fae78af0ed839ab3950255fa56aa78'
             '391b1cb6b423c427fc46fb491f85d544e4756795833c6fb2553ddad6dc658d93'
             '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
-            '37162e4ef2b829760d1c16c7bb49805316b333a6aba84040fa602a415de9e773'
+            '9620022c602f60e666ae0faa65ad33d52024219895ad1aef06701cce4d9492aa'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
-            '02e8b02e8cd10aa059917a489a9663e7f66bdf12c5ae8a1e0369bb2862da6b68'
-            'd59014b8f887c6aa9488ef5ff9bc5d4357850a979f3ff90a2999bbe24e5c6e15'
+            'e9b7f502b5e27fc4154f0b98f3870f2988b58414df948a61a82502d84bc68a72'
+            '0004f61a57696a41a1bca1a4a2e6abb03b6ae1b2e67ce73055ae062764660f2f'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
@@ -86,7 +83,7 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  # patch -p1 -i "${srcdir}/patch-${pkgver}"
+  patch -p1 -i "${srcdir}/patch-${_pkgbasever}-gnu-${pkgver}-gnu"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -142,7 +139,6 @@ prepare() {
                  --disable staging \
                  --disable wimax
 
-
   msg "Disabling unused debugging features"
   scripts/config --disable debug_fs \
                  --disable debug_kernel \
@@ -160,7 +156,7 @@ prepare() {
 
 
   msg "Disabling accessibility support"
-  scripts/config --disable accessibility \
+  scripts/config --disable accessibility
 
   msg "Enabling access to config via /proc"
   scripts/config --enable ikconfig --enable ikconfig_proc
@@ -239,7 +235,7 @@ prepare() {
   sed -i '2iexit 0' scripts/depmod.sh
 
   msg "Enabling compiler optimizations"
-  scripts/config --enable  cc_optimize_for_performance \
+  scripts/config --disable cpu_freq_default_gov_ondemand \
                  --enable  cpu_freq_default_gov_schedutil \
                  --enable  kernel_lz4 \
                  --enable  mnative \
