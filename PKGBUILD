@@ -5,7 +5,7 @@
 #pkgbase=linux              # Build stock -ARCH kernel
 pkgbase=linux-custom  # Build kernel with a different name
 _srcname=linux-4.7
-pkgver=4.7.1
+pkgver=4.7.2
 _pkgbasever=4.7
 pkgrel=1
 arch=('i686' 'x86_64')
@@ -58,7 +58,7 @@ source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-g
 
 sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             'SKIP'
-            'dd831fc3104057cf43f05391c40da84543a146a7ce748bb6e21132a06712a879'
+            '031cb0e7b86f2ef2cc4d0dde9d73495f68e8d23e4c41f50f7f95b065ee33a71d'
             'SKIP'
             'SKIP'
             'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
@@ -67,8 +67,8 @@ sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
             '9620022c602f60e666ae0faa65ad33d52024219895ad1aef06701cce4d9492aa'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
-            'e9b7f502b5e27fc4154f0b98f3870f2988b58414df948a61a82502d84bc68a72'
-            '0004f61a57696a41a1bca1a4a2e6abb03b6ae1b2e67ce73055ae062764660f2f'
+            '749b19cac625284ba6abae2d3932465b64d41d0274a3c070ca2c556779bb2078'
+            '7d2bb66458b57d4df497ebb15a4ac130d08a0c084ae7845d0fe791a194efdb8e'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
