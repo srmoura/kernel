@@ -1,13 +1,13 @@
-# $Id: PKGBUILD 273608 2016-08-11 18:16:05Z tpowa $
+# $Id: PKGBUILD 276099 2016-09-09 14:57:04Z tpowa $
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
 #pkgbase=linux              # Build stock -ARCH kernel
 pkgbase=linux-custom  # Build kernel with a different name
 _srcname=linux-4.7
-pkgver=4.7.2
+pkgver=4.7.3
 _pkgbasever=4.7
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -54,11 +54,12 @@ source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-g
         'config' 'config.x86_64'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
-        'change-default-console-loglevel.patch')
+        'change-default-console-loglevel.patch'
+        )
 
 sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             'SKIP'
-            '031cb0e7b86f2ef2cc4d0dde9d73495f68e8d23e4c41f50f7f95b065ee33a71d'
+            'd0a3e799f1996ee3274409d83694176cf663ac0fce9bb038db48affa081fde35'
             'SKIP'
             'SKIP'
             'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
@@ -67,8 +68,8 @@ sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
             '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
             '9620022c602f60e666ae0faa65ad33d52024219895ad1aef06701cce4d9492aa'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
-            '749b19cac625284ba6abae2d3932465b64d41d0274a3c070ca2c556779bb2078'
-            '7d2bb66458b57d4df497ebb15a4ac130d08a0c084ae7845d0fe791a194efdb8e'
+            '8ac2fb81f4c932c6b1877ca2bda9a98c3ffbb42359dce7dea588c97df4db8c8a'
+            '931724fe1a57134442fecc739ccb32984c1c6a0f0ae7e7311fd9536bb0e47ead'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
