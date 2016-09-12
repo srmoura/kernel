@@ -206,6 +206,23 @@ prepare() {
   #    -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
   #fi
 
+  msg "Disabling NUMA"
+  scripts/config --disable numa \
+                 --disable x86_64_acpi_numa \
+                 --disable acpi_numa
+
+  msg "Disabling most hardware hotplug"
+  scripts/config --disable memory_hotplug \
+                 --disable memory_hotplug_sparse \
+                 --disable hotplug_cpu \
+                 --disable acpi_hotplug_cpu \
+                 --disable acpi_hotplug_memory \
+                 --disable acpi_hotplug_ioapic \
+                 --disable hotplug_pci_pcie \
+                 --disable hotplug_pci \
+                 --disable hotplug_pci_acpi \
+                 --disable hotplug_pci_cpci
+
   msg "Enabling BFS CPU scheduler..."
   scripts/config --disable hz_250_nodefault \
                  --enable sched_bfs \
