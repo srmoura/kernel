@@ -36,10 +36,10 @@ UFS='reiserfs jfs xfs gfs2 ocfs2 btrfs nilfs2'
 # Unwanted ramdisk formats
 URD='bzip2 lzma xz lzo'
 
-source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-gnu/linux-libre-${_pkgbasever}-gnu.tar.xz"
-        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-gnu/linux-libre-${_pkgbasever}-gnu.tar.xz.sign"
-        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/patch-${_pkgbasever}-gnu-${pkgver}-gnu.xz"
-        "https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/patch-${_pkgbasever}-gnu-${pkgver}-gnu.xz.sign"
+source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
         # graysky's gcc patch file
         "git+https://github.com/graysky2/kernel_gcc_patch.git"
         # ck patchset file
@@ -57,9 +57,9 @@ source=("https://linux-libre.fsfla.org/pub/linux-libre/releases/${_pkgbasever}-g
         'change-default-console-loglevel.patch'
         )
 
-sha256sums=('f483e595e0ad9a9d1b3afd20e4ecb0b798cf16eb31e79a7b99311eb9c061032a'
+sha256sums=('5190c3d1209aeda04168145bf50569dc0984f80467159b1dc50ad731e3285f10'
             'SKIP'
-            'd0a3e799f1996ee3274409d83694176cf663ac0fce9bb038db48affa081fde35'
+            '826b96e794d325abf430e8d6c3279a21e97e3ec321a3962b9dd6966693b14d88'
             'SKIP'
             'SKIP'
             'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
@@ -84,7 +84,7 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # add upstream patch
-  patch -p1 -i "${srcdir}/patch-${_pkgbasever}-gnu-${pkgver}-gnu"
+  patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
