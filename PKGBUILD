@@ -21,7 +21,7 @@ _ckver=1
 _ckpatch="patch-${_kver}-ck${_ckver}"
 
 # paolo's bfq i/o scheduler
-_bfqver="v8r2"
+_bfqver="v8r3"
 _bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 
 # Unwanted DRM drivers
@@ -66,7 +66,7 @@ sha256sums=('5190c3d1209aeda04168145bf50569dc0984f80467159b1dc50ad731e3285f10'
             '1e16d406dc5b58d61198566281dbfea781fae78af0ed839ab3950255fa56aa78'
             '391b1cb6b423c427fc46fb491f85d544e4756795833c6fb2553ddad6dc658d93'
             '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
-            '9620022c602f60e666ae0faa65ad33d52024219895ad1aef06701cce4d9492aa'
+            'db7872616d7ed3137d4b738e6e29fdaff58981a1d3912e3f1c33cd9fc61bca27'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
             '8ac2fb81f4c932c6b1877ca2bda9a98c3ffbb42359dce7dea588c97df4db8c8a'
             '931724fe1a57134442fecc739ccb32984c1c6a0f0ae7e7311fd9536bb0e47ead'
