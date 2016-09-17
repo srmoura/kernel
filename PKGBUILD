@@ -5,9 +5,9 @@
 #pkgbase=linux              # Build stock -ARCH kernel
 pkgbase=linux-custom  # Build kernel with a different name
 _srcname=linux-4.7
-pkgver=4.7.3
+pkgver=4.7.4
 _pkgbasever=4.7
-pkgrel=2
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -59,7 +59,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
 
 sha256sums=('5190c3d1209aeda04168145bf50569dc0984f80467159b1dc50ad731e3285f10'
             'SKIP'
-            '826b96e794d325abf430e8d6c3279a21e97e3ec321a3962b9dd6966693b14d88'
+            'a7e9415d35cee130f2ea5ae4edc652d4be784d9bbfd77e850f1e999f812b2116'
             'SKIP'
             'SKIP'
             'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
