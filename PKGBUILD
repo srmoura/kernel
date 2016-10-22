@@ -1,12 +1,11 @@
-# $Id: PKGBUILD 276099 2016-09-09 14:57:04Z tpowa $
+# Id: PKGBUILD 277473 2016-09-30 19:28:40Z tpowa $
 # Maintainer: Tobias Powalowski <tpowa@archlinux.org>
 # Maintainer: Thomas Baechler <thomas@archlinux.org>
 
-#pkgbase=linux              # Build stock -ARCH kernel
-pkgbase=linux-custom  # Build kernel with a different name
-_srcname=linux-4.7
-pkgver=4.7.4
-_pkgbasever=4.7
+#pkgbase=linux               # Build stock -ARCH kernel
+pkgbase=linux-custom       # Build kernel with a different name
+_srcname=linux-4.8
+pkgver=4.8.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -17,11 +16,11 @@ options=('!strip')
 _kver=${_srcname#linux-}
 
 # ck patchset
-_ckver=1
+_ckver=3
 _ckpatch="patch-${_kver}-ck${_ckver}"
 
 # paolo's bfq i/o scheduler
-_bfqver="v8r3"
+_bfqver="v8r4"
 _bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 
 # Unwanted DRM drivers
@@ -45,10 +44,10 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         # ck patchset file
         "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
         # paolo's bfq i/o scheduler files
-        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r11-${_pkgbasever}.0.patch"
-        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r11-I-O-sched-for-${_pkgbasever}.0.patch"
-        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r11-for.patch"
-        "${_bfqpath}/0004-block-bfq-turn-BFQ-v7r11-for-${_pkgbasever}.0-into-BFQ-${_bfqver}-for.patch"
+        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r11-${_kver}.0.patch"
+        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r11-I-O-sched-to-be-ported.patch"
+        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r11-to-.patch"
+        "${_bfqpath}/0004-Turn-BFQ-v7r11-into-BFQ-${_bfqver}-for-${_kver}.0.patch"
         'zen-tune.patch'
         # the main kernel config files
         'config' 'config.x86_64'
@@ -57,19 +56,19 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         'change-default-console-loglevel.patch'
         )
 
-sha256sums=('5190c3d1209aeda04168145bf50569dc0984f80467159b1dc50ad731e3285f10'
+sha256sums=('3e9150065f193d3d94bcf46a1fe9f033c7ef7122ab71d75a7fb5a2f0c9a7e11a'
             'SKIP'
-            'a7e9415d35cee130f2ea5ae4edc652d4be784d9bbfd77e850f1e999f812b2116'
+            '86e246b19253ee3aa971403a5990376a5e33667122f7c8742cc0ee807f204403'
             'SKIP'
             'SKIP'
-            'e8d70729a7a58bac904d9a7a52ae4d46feec671afa307e6814895d74daf5ffbc'
-            '1e16d406dc5b58d61198566281dbfea781fae78af0ed839ab3950255fa56aa78'
-            '391b1cb6b423c427fc46fb491f85d544e4756795833c6fb2553ddad6dc658d93'
-            '57d5a143de0424a5ac2b86e3f43fde57e31c101de0a029f9c40c1cf21a9a795a'
-            'db7872616d7ed3137d4b738e6e29fdaff58981a1d3912e3f1c33cd9fc61bca27'
+            'dc1a5562a20136e58a533b6f3937b993c4b5ed6d6b89988329c86538507f0503'
+            '1dabd969b18b7e09e2ffeffe4c2430dbc26e5df9868563d54ca95f45c690262f'
+            'c8d17a7893d5780fd0c90311470160dcc842b81621b30671150e2e3224be86d2'
+            'e47ea5b1c2f20cfade4e6a85bff1320dac84ac638e48ef4eec7285fe9e1e1def'
+            'c3c96e304aef378f0cc6e1fb18eeabe176e6ba918d13060c105f3d8cabc85f59'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
-            '8ac2fb81f4c932c6b1877ca2bda9a98c3ffbb42359dce7dea588c97df4db8c8a'
-            '931724fe1a57134442fecc739ccb32984c1c6a0f0ae7e7311fd9536bb0e47ead'
+            '2ac8818414beb7dbacbd3ad450c516e6ada804827132a7132f63b8189e5f5151'
+            '93a4ad4f6c7bb9296fddec436ed7477a5a5c11cf4d6e68482fa6610442cbcb1f'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
@@ -232,6 +231,7 @@ prepare() {
   scripts/config --enable bfq_group_iosched \
                  --enable iosched_bfq \
                  --disable iosched_cfq \
+                 --disable default_bfq \
                  --enable default_noop
 
   msg "Enabling Zen tuning options..."
