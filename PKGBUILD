@@ -211,6 +211,9 @@ prepare() {
                  --disable hotplug_pci_acpi \
                  --disable hotplug_pci_cpci
 
+  msg "Disabling PCI-Express ASPM..."
+  scripts/config --disable pcieaspm --disable pcieaspm_default
+
   msg "Enabling BFS CPU scheduler..."
   scripts/config --disable hz_250_nodefault \
                  --enable sched_bfs \
