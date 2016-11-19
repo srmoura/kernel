@@ -232,6 +232,7 @@ prepare() {
   msg "Enabling processor-specific optimizations"
   scripts/config --set-val nr_cpus 4 \
                  --disable amd_iommu \
+                 --disable amd_nb \
                  --disable calgary_iommu \
                  --disable gart_iommu \
                  --disable microcode_amd \
