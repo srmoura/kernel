@@ -5,8 +5,8 @@
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-custom       # Build kernel with a different name
 _srcname=linux-4.8
-pkgver=4.8.4
-pkgrel=1
+pkgver=4.8.8
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -44,13 +44,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         # ck patchset file
         "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
         # paolo's bfq i/o scheduler files
-        "${_bfqpath}/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r11-${_kver}.0.patch"
-        "${_bfqpath}/0002-block-introduce-the-BFQ-v7r11-I-O-sched-to-be-ported.patch"
-        "${_bfqpath}/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r11-to-.patch"
-        "${_bfqpath}/0004-Turn-BFQ-v7r11-into-BFQ-${_bfqver}-for-${_kver}.0.patch"
         'zen-tune.patch'
         # the main kernel config files
         'config' 'config.x86_64'
+        # pacman hook for initramfs regeneration
+        '80-linux.hook'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
@@ -58,17 +56,14 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
 
 sha256sums=('3e9150065f193d3d94bcf46a1fe9f033c7ef7122ab71d75a7fb5a2f0c9a7e11a'
             'SKIP'
-            '86e246b19253ee3aa971403a5990376a5e33667122f7c8742cc0ee807f204403'
+            '588b6537cb660c2f7d483aca13f7509a5fc86c60df32c167d40e81d6c7ab4f9c'
             'SKIP'
             'SKIP'
             'dc1a5562a20136e58a533b6f3937b993c4b5ed6d6b89988329c86538507f0503'
-            '1dabd969b18b7e09e2ffeffe4c2430dbc26e5df9868563d54ca95f45c690262f'
-            'c8d17a7893d5780fd0c90311470160dcc842b81621b30671150e2e3224be86d2'
-            'e47ea5b1c2f20cfade4e6a85bff1320dac84ac638e48ef4eec7285fe9e1e1def'
-            'c3c96e304aef378f0cc6e1fb18eeabe176e6ba918d13060c105f3d8cabc85f59'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
             '2ac8818414beb7dbacbd3ad450c516e6ada804827132a7132f63b8189e5f5151'
             '93a4ad4f6c7bb9296fddec436ed7477a5a5c11cf4d6e68482fa6610442cbcb1f'
+            '2d4424928ae3c5f63ee618b4685580f4bd24faf1778553dbd961f85a88ea0910'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
@@ -98,12 +93,6 @@ prepare() {
   sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatch}"
   msg "Patching source with ck${_ckver}"
   patch -Np1 -i "${srcdir}/${_ckpatch}"
-
-  # Patch source with BFQ scheduler
-  msg "Patching source with BFQ patches"
-  for p in "${srcdir}"/000{1,2,3,4}-block*.patch; do
-    patch -Np1 -i "$p"
-  done
 
   # Patch source to enable more gcc CPU optimizatons via the make nconfig
   msg "Patching source with gcc patch to enable more cpus types"
@@ -329,6 +318,9 @@ _package() {
     -e "s|default_image=.*|default_image=\"/boot/initramfs-${pkgbase}.img\"|" \
     -e "s|fallback_image=.*|fallback_image=\"/boot/initramfs-${pkgbase}-fallback.img\"|" \
     -i "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
+
+  # install pacman hook for initramfs regeneration
+  install -D -m644 "${srcdir}/80-linux.hook" "${pkgdir}/usr/share/libalpm/hooks/80-linux.hook"
 
   # remove build and source links
   rm -f "${pkgdir}"/lib/modules/${_kernver}/{source,build}
