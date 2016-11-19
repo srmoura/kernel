@@ -258,10 +258,8 @@ prepare() {
   msg "Enabling support for MMC/SD/SDIO card"
   scripts/config --module mmc --module mfd_rtsx_pci
 
-  msg "Disabling stubborn features"
-  scripts/config --disable chrome_platforms \
-                 --disable gcov \
-                 --disable virtualization
+  #msg "Disabling stubborn features"
+  scripts/config --disable chrome_platforms --disable gcov
 
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
