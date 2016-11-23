@@ -254,18 +254,18 @@ prepare() {
                  --enable  optimize_inlining \
                  --enable  trim_unused_ksyms
 
+  msg "Enabling ASUS laptop utils"
+  scripts/config --module asus_laptop
+
+  msg "Enabling support for MMC/SD/SDIO card"
+  scripts/config --module mmc --module mfd_rtsx_pci
+
   # get kernel version
   make prepare
 
   # load probed modules
   sudo /usr/bin/modprobed-db recall
   make localmodconfig
-
-  msg "Enabling ASUS laptop utils"
-  scripts/config --module asus_laptop
-
-  msg "Enabling support for MMC/SD/SDIO card"
-  scripts/config --module mmc --module mfd_rtsx_pci
 
   #msg "Disabling stubborn features"
   scripts/config --disable chrome_platforms --disable gcov
