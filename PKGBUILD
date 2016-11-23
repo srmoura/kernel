@@ -125,7 +125,7 @@ prepare() {
                  --disable media_analog_tv_support \
                  --disable media_digital_tv_support \
                  --disable media_radio_support \
-                 --disable media_sdr_support
+                 --disable media_sdr_support \
                  --disable memstick \
                  --disable nfc \
                  --disable parport \
@@ -208,7 +208,6 @@ prepare() {
   msg "Disabling most hardware hotplug"
   scripts/config --disable memory_hotplug \
                  --disable memory_hotplug_sparse \
-                 --disable hotplug_cpu \
                  --disable acpi_hotplug_cpu \
                  --disable acpi_hotplug_memory \
                  --disable acpi_hotplug_ioapic \
