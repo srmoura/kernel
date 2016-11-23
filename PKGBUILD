@@ -5,8 +5,8 @@
 #pkgbase=linux               # Build stock -ARCH kernel
 pkgbase=linux-custom       # Build kernel with a different name
 _srcname=linux-4.8
-pkgver=4.8.8
-pkgrel=2
+pkgver=4.8.10
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -43,12 +43,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "git+https://github.com/graysky2/kernel_gcc_patch.git"
         # ck patchset file
         "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
-        # paolo's bfq i/o scheduler files
         'zen-tune.patch'
         # the main kernel config files
         'config' 'config.x86_64'
         # pacman hook for initramfs regeneration
-        '80-linux.hook'
+        '99-linux.hook'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
@@ -56,14 +55,14 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
 
 sha256sums=('3e9150065f193d3d94bcf46a1fe9f033c7ef7122ab71d75a7fb5a2f0c9a7e11a'
             'SKIP'
-            '588b6537cb660c2f7d483aca13f7509a5fc86c60df32c167d40e81d6c7ab4f9c'
+            'd0ea1671c488957d7b1ef46a5107c47c16b37f2985ca7ee4c900ba0f89d40d3c'
             'SKIP'
             'SKIP'
             'dc1a5562a20136e58a533b6f3937b993c4b5ed6d6b89988329c86538507f0503'
             'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
             '2ac8818414beb7dbacbd3ad450c516e6ada804827132a7132f63b8189e5f5151'
-            '93a4ad4f6c7bb9296fddec436ed7477a5a5c11cf4d6e68482fa6610442cbcb1f'
-            '2d4424928ae3c5f63ee618b4685580f4bd24faf1778553dbd961f85a88ea0910'
+            '41b9a64542befd2fea170776e8ec22a7d158dd3273633afc9b91662c448cd90a'
+            '834bd254b56ab71d73f59b3221f056c72f559553c04718e350ab2a3e2991afe0'
             'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
@@ -112,6 +111,7 @@ prepare() {
 
   msg "Disabling unused drivers, port support and protocols"
   scripts/config --disable agp \
+                 --disable dvb_net \
                  --disable firewire \
                  --disable hamradio \
                  --disable hypervisor_guest \
@@ -119,12 +119,18 @@ prepare() {
                  --disable input_touchscreen \
                  --disable input_misc \
                  --disable irda \
+                 --disable isdn \
                  --disable macintosh_drivers \
                  --disable md \
+                 --disable media_analog_tv_support \
+                 --disable media_digital_tv_support \
+                 --disable media_radio_support \
+                 --disable media_sdr_support
                  --disable memstick \
                  --disable nfc \
                  --disable parport \
                  --disable partition_advanced \
+                 --disable radio_adapters \
                  --disable sfi \
                  --disable snd_soc \
                  --disable staging \
@@ -270,7 +276,7 @@ prepare() {
   #make menuconfig # CLI menu for configuration
   #make nconfig # new CLI menu for configuration
   #make xconfig # X-based configuration
-  make oldconfig # using old config from previous kernel version
+  #make oldconfig # using old config from previous kernel version
   # ... or manually edit .config
 
   # rewrite configuration
@@ -305,24 +311,17 @@ _package() {
   cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-${pkgbase}"
 
   # set correct depmod command for install
-  cp -f "${startdir}/${install}" "${startdir}/${install}.pkg"
+  sed -e "s|%PKGBASE%|${pkgbase}|g;s|%KERNVER%|${_kernver}|g" \
+    "${startdir}/${install}" > "${startdir}/${install}.pkg"
   true && install=${install}.pkg
-  sed \
-    -e  "s/KERNEL_NAME=.*/KERNEL_NAME=${_kernelname}/" \
-    -e  "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" \
-    -i "${startdir}/${install}"
 
   # install mkinitcpio preset file for kernel
-  install -D -m644 "${srcdir}/linux.preset" "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
-  sed \
-    -e "1s|'linux.*'|'${pkgbase}'|" \
-    -e "s|ALL_kver=.*|ALL_kver=\"/boot/vmlinuz-${pkgbase}\"|" \
-    -e "s|default_image=.*|default_image=\"/boot/initramfs-${pkgbase}.img\"|" \
-    -e "s|fallback_image=.*|fallback_image=\"/boot/initramfs-${pkgbase}-fallback.img\"|" \
-    -i "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
+  sed "s|%PKGBASE%|${pkgbase}|g" "${srcdir}/linux.preset" |
+    install -D -m644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
 
   # install pacman hook for initramfs regeneration
-  install -D -m644 "${srcdir}/80-linux.hook" "${pkgdir}/usr/share/libalpm/hooks/80-linux.hook"
+  sed "s|%PKGBASE%|${pkgbase}|g" "${srcdir}/99-linux.hook" |
+    install -D -m644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/99-${pkgbase}.hook"
 
   # remove build and source links
   rm -f "${pkgdir}"/lib/modules/${_kernver}/{source,build}
