@@ -1,27 +1,19 @@
-# Id: PKGBUILD 277473 2016-09-30 19:28:40Z tpowa $
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
-# Maintainer: Thomas Baechler <thomas@archlinux.org>
+# $Id: PKGBUILD 285621 2017-01-10 01:50:29Z heftig $
+# Maintainer: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+# Contributor: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Thomas Baechler <thomas@archlinux.org>
 
-#pkgbase=linux               # Build stock -ARCH kernel
+#pkgbase=linux-zen           # Build -zen kernel
 pkgbase=linux-custom       # Build kernel with a different name
-_srcname=linux-4.8
-pkgver=4.8.10
+_srcname=linux-4.9
+_zenpatch=zen-4.9.2-b1da2ffa8e8886b4954c0c15cd550e0d8032a2b5.diff
+pkgver=4.9.2
 pkgrel=1
 arch=('i686' 'x86_64')
-url="http://www.kernel.org/"
+url="https://github.com/zen-kernel/zen-kernel"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'libelf')
 options=('!strip')
-
-_kver=${_srcname#linux-}
-
-# ck patchset
-_ckver=3
-_ckpatch="patch-${_kver}-ck${_ckver}"
-
-# paolo's bfq i/o scheduler
-_bfqver="v8r4"
-_bfqpath="http://algo.ing.unimo.it/people/paolo/disk_sched/patches/${_kver}.0-${_bfqver}"
 
 # Unwanted DRM drivers
 UDRM='amdgpu ast bochs cirrus_qemu gma500 mga mgag200 nouveau qxl radeon r128 savage tdfx udl via virtio_gpu vmwgfx'
@@ -39,11 +31,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.sign"
-        # graysky's gcc patch file
-        "git+https://github.com/graysky2/kernel_gcc_patch.git"
-        # ck patchset file
-        "http://ck.kolivas.org/patches/4.0/${_kver}/${_kver}-ck${_ckver}/${_ckpatch}.xz"
-        'zen-tune.patch'
+        "https://pkgbuild.com/~heftig/zen-patches/${_zenpatch}.xz"
+        "https://pkgbuild.com/~heftig/zen-patches/${_zenpatch}.sign"
         # the main kernel config files
         'config' 'config.x86_64'
         # pacman hook for initramfs regeneration
@@ -53,21 +42,21 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         'change-default-console-loglevel.patch'
         )
 
-sha256sums=('3e9150065f193d3d94bcf46a1fe9f033c7ef7122ab71d75a7fb5a2f0c9a7e11a'
+sha256sums=('029098dcffab74875e086ae970e3828456838da6e0ba22ce3f64ef764f3d7f1a'
             'SKIP'
-            'd0ea1671c488957d7b1ef46a5107c47c16b37f2985ca7ee4c900ba0f89d40d3c'
+            'eb4fd5944662b2985cec8e4b9b5e94943ac882ede811deb5cdd1ab00f77e0933'
             'SKIP'
+            '89a4828a6beb56678889ae0cfa9aa25ef8e60f58a7425e08c14d26eeba57ba09'
             'SKIP'
-            'dc1a5562a20136e58a533b6f3937b993c4b5ed6d6b89988329c86538507f0503'
-            'e951a1185337773b08bd433c82ee8e4a3a353945c7a033e5d7296558df90c3a5'
-            '2ac8818414beb7dbacbd3ad450c516e6ada804827132a7132f63b8189e5f5151'
-            '41b9a64542befd2fea170776e8ec22a7d158dd3273633afc9b91662c448cd90a'
+            '2dca73aa37702b935b2b7e9771b6091629975f9cc5053c4ed69f28cd06a0d130'
+            'c273362059ecaade324eaa4fc6e6f2a30fb7958daaa91bcd584bf1342dfc0858'
             '834bd254b56ab71d73f59b3221f056c72f559553c04718e350ab2a3e2991afe0'
-            'bd24bded4327f58b0fb2619272c698504186fa0c1adbddf13038e7f6b897ce68'
+            'b059097d6e55a05d598c0b006643d20fe5141d8e948e6cd97963e19e29942416'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 validpgpkeys=(
               'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linus Torvalds
               '647F28654894E3BD457199BE38DBBDC86092693E' # Greg Kroah-Hartman
+              '8218F88849AAC522E94CF470A5E9288C4FA415FA' # Jan Alexander Steffens (heftig)
              )
 
 #_kernelname=${pkgbase#linux}
@@ -82,24 +71,13 @@ prepare() {
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
 
+  # add zen patch
+  patch -p1 -i "${srcdir}/${_zenpatch}"
+
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
   patch -p1 -i "${srcdir}/change-default-console-loglevel.patch"
-
-  # patch source with ck patchset with BFS
-  # fix double name in EXTRAVERSION
-  sed -i -re "s/^(.EXTRAVERSION).*$/\1 = /" "${srcdir}/${_ckpatch}"
-  msg "Patching source with ck${_ckver}"
-  patch -Np1 -i "${srcdir}/${_ckpatch}"
-
-  # Patch source to enable more gcc CPU optimizatons via the make nconfig
-  msg "Patching source with gcc patch to enable more cpus types"
-  patch -Np1 -i "${srcdir}/kernel_gcc_patch/enable_additional_cpu_optimizations_for_gcc_v4.9+_kernel_v3.15+.patch"
-
-  # Patch source with Zen Tuning for improved responsiveness
-  msg "Patching source with Zen Tuning"
-  patch -Np1 -i "${srcdir}/zen-tune.patch"
 
   make mrproper
 
@@ -150,7 +128,6 @@ prepare() {
   scripts/config --disable module_force_load \
                  --disable module_force_unload \
                  --disable modversions
-
 
   msg "Disabling accessibility support"
   scripts/config --disable accessibility

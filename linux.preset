@@ -1,10 +1,14 @@
-# mkinitcpio preset file for the 'linux-custom' package
+# mkinitcpio preset file for the '%PKGBASE%' package
 
 ALL_config="/etc/mkinitcpio.conf"
-ALL_kver="/boot/vmlinuz-linux-custom"
+ALL_kver="/boot/vmlinuz-%PKGBASE%"
 
 PRESETS=('default')
 
 #default_config="/etc/mkinitcpio.conf"
-default_image="/boot/initramfs-linux-custom.img"
-default_options="-S udev,autodetect,modconf,block,filesystems,keyboard,keymap,fsck"
+default_image="/boot/initramfs-%PKGBASE%.img"
+#default_options=""
+
+#fallback_config="/etc/mkinitcpio.conf"
+#fallback_image="/boot/initramfs-%PKGBASE%-fallback.img"
+#fallback_options="-S autodetect"
