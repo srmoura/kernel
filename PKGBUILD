@@ -106,8 +106,10 @@ prepare() {
                  --disable media_sdr_support \
                  --disable memstick \
                  --disable nfc \
+                 --disable numa \
                  --disable parport \
                  --disable partition_advanced \
+                 --disable pcspkr_platform \
                  --disable radio_adapters \
                  --disable sfi \
                  --disable snd_soc \
@@ -163,49 +165,19 @@ prepare() {
   # set extraversion to pkgrel
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
 
-  #if [ "${CARCH}" = "x86_64" ]; then
-  #  msg "Disabling NUMA from kernel config..."
-  #  sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
-  #    -i -e '/CONFIG_AMD_NUMA=y/d' \
-  #    -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
-  #    -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
-  #    -i -e '/# CONFIG_NUMA_EMU is not set/d' \
-  #    -i -e '/CONFIG_NODES_SHIFT=6/d' \
-  #    -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
-  #    -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
-  #    -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
-  #    -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
-  #fi
-
-  msg "Disabling NUMA"
-  scripts/config --disable numa \
-                 --disable x86_64_acpi_numa \
-                 --disable acpi_numa
-
-  msg "Disabling most hardware hotplug"
-  scripts/config --disable memory_hotplug \
-                 --disable memory_hotplug_sparse \
-                 --disable acpi_hotplug_cpu \
-                 --disable acpi_hotplug_memory \
-                 --disable acpi_hotplug_ioapic \
-                 --disable hotplug_pci_pcie \
-                 --disable hotplug_pci \
-                 --disable hotplug_pci_acpi \
-                 --disable hotplug_pci_cpci
+  msg "Disabling memory and PCI hotplug"
+  scripts/config --disable memory_hotplug --disable hotplug_pci
 
   msg "Disabling PCI-Express ASPM..."
-  scripts/config --disable pcieaspm --disable pcieaspm_default
+  scripts/config --disable pcieaspm
 
-  msg "Enabling BFS CPU scheduler..."
-  scripts/config --disable hz_250_nodefault \
-                 --enable sched_bfs \
-                 --enable smt_nice
+  msg "Enabling MuQSS and setting as default CPU scheduler..."
+  scripts/config --enable sched_muqss
 
   msg "Enabling BFQ and setting noop as default I/O scheduler..."
   scripts/config --enable bfq_group_iosched \
                  --enable iosched_bfq \
                  --disable iosched_cfq \
-                 --disable default_bfq \
                  --enable default_noop
 
   msg "Enabling Zen tuning options..."
@@ -226,7 +198,6 @@ prepare() {
   msg "Enabling compiler optimizations"
   scripts/config --disable cpu_freq_default_gov_ondemand \
                  --enable  cpu_freq_default_gov_schedutil \
-                 --enable  kernel_lz4 \
                  --enable  mnative \
                  --enable  optimize_inlining \
                  --enable  trim_unused_ksyms
@@ -234,8 +205,8 @@ prepare() {
   msg "Enabling ASUS laptop utils"
   scripts/config --module asus_laptop
 
-  msg "Enabling support for MMC/SD/SDIO card"
-  scripts/config --module mmc --module mfd_rtsx_pci
+  # msg "Enabling support for MMC/SD/SDIO card"
+  # scripts/config --module mmc --module mfd_rtsx_pci
 
   # get kernel version
   make prepare
@@ -244,7 +215,10 @@ prepare() {
   sudo /usr/bin/modprobed-db recall
   make localmodconfig
 
-  #msg "Disabling stubborn features"
+  # msg "Reenabling stuff broken by localmodconfig"
+  scripts/config --enable pptp
+
+  # msg "Disabling stubborn features"
   scripts/config --disable chrome_platforms --disable gcov
 
   # load configuration
